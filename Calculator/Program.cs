@@ -3,12 +3,9 @@ class Program
 {
     static void Main()
     {
-        Console.WriteLine("街乡平台设备数据情况比对程序\n\n数据表文件名必须以'街乡平台设备在线'开头，以'.xlsx'结尾,且在线原数据位于第二个sheet;\n\n统计结果文件名为'小区统计表1775.xlsx',不能更改");
-        var file_list = Directory.GetFiles(".", "街乡平台设备在线*.xlsx");
+        var file_list = Directory.GetFiles(".", "街乡*.xlsx");
         if (file_list.Length == 0)
         {
-            Console.WriteLine("未找到'街乡平台设备在线'开头的文件，按enter退出...");
-            Console.ReadLine();
             Environment.Exit(1);
         }
 
