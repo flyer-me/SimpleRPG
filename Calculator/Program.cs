@@ -3,12 +3,12 @@ class Program
 {
     static void Main()
     {
-        Console.WriteLine("街乡平台设备数据情况比对程序\n\n数据表文件名必须以'街乡平台设备在线'开头，以'.xlsx'结尾,且在线原数据位于第二个sheet;\n\n统计结果文件名为'小区统计表1775.xlsx',不能更改");
-        var file_list = Directory.GetFiles(".", "街乡平台设备在线*.xlsx");
-        if (file_list.Length == 0)
+        var file_list = Directory.GetFiles(".", "街乡*.xlsx");
+        var files = Directory.GetFiles(".", "小区*.xlsx");
+        var xls_file = files[0];
+        if (file_list.Length == 0 || files.Length == 0)
         {
-            Console.WriteLine("未找到'街乡平台设备在线'开头的文件，按enter退出...");
-            Console.ReadLine();
+            Console.WriteLine("缺少文件.");
             Environment.Exit(1);
         }
 
@@ -52,7 +52,7 @@ class Program
         }
         Console.WriteLine("统计完成..");
 
-        using (var file = new ExcelPackage(new FileInfo("小区统计表1775.xlsx")))
+        using (var file = new ExcelPackage(new FileInfo(xls_file)))
         {
             var sheet = file.Workbook.Worksheets[0];
 
