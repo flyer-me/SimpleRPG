@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "IPC_osd": {
-      "commandName": "Project",
-      "workingDirectory": "D:\\User_data\\Code\\Calculator\\IPC_osd"
-    }
-  }
-}
