@@ -2,7 +2,7 @@
 using System.Data;
 using System.Windows;
 
-namespace Hello
+namespace WPFUI
 {
     /// <summary>
     /// Interaction logic for App.xaml
