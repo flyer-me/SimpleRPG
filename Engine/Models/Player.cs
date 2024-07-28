@@ -8,20 +8,67 @@ namespace Engine.Models
 {
     public class Player:INotifyPropertyChanged
     {
+        private string _name;
+        private string _characterClass;
+        private int _hitPoints;
         private int _experiencePoints;
-        public string? Name { get; set; }
-        public string? CharacterClass { get; set; }
-        public int HitPoints { get; set; }
-        public int ExperiencePoints 
-        { 
-            get { return _experiencePoints; }
-            set { _experiencePoints = value;
-                OnPropertyChanged("ExperiencePoints");
+        private int _level;
+        private int _Assets;
+
+        public string Name
+        {
+            get { return _name; }
+            set
+            {
+                _name = value;
+                OnPropertyChanged(nameof(Name));
             }
         }
-        public int Level { get; set; }
-        public int Assets { get; set; }
-
+        public string CharacterClass
+        {
+            get { return _characterClass; }
+            set
+            {
+                _characterClass = value;
+                OnPropertyChanged(nameof(CharacterClass));
+            }
+        }
+        public int HitPoints
+        {
+            get { return _hitPoints; }
+            set
+            {
+                _hitPoints = value;
+                OnPropertyChanged(nameof(HitPoints));
+            }
+        }
+        public int ExperiencePoints
+        {
+            get { return _experiencePoints; }
+            set
+            {
+                _experiencePoints = value;
+                OnPropertyChanged(nameof(ExperiencePoints));
+            }
+        }
+        public int Level
+        {
+            get { return _level; }
+            set
+            {
+                _level = value;
+                OnPropertyChanged(nameof(Level));
+            }
+        }
+        public int Assets
+        {
+            get { return _Assets; }
+            set
+            {
+                _Assets = value;
+                OnPropertyChanged(nameof(Assets));
+            }
+        }
         public event PropertyChangedEventHandler? PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)
         {
