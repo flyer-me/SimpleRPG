@@ -13,7 +13,7 @@ namespace Engine.Models
         private int _hitPoints;
         private int _experiencePoints;
         private int _level;
-        private int _Assets;
+        private int _assets;
 
         public string Name
         {
@@ -62,10 +62,10 @@ namespace Engine.Models
         }
         public int Assets
         {
-            get { return _Assets; }
+            get { return _assets; }
             set
             {
-                _Assets = value;
+                _assets = value;
                 OnPropertyChanged(nameof(Assets));
             }
         }
