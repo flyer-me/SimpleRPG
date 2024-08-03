@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WPFUI"
         mc:Ignorable="d"
         FontSize="11pt"
-        Title="Scott's Awesome Game" Height="768" Width="1024">
+        Title="My Awesome Game" Height="768" Width="1024">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibility"/>
     </Window.Resources>
