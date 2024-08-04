@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WPFUI"
         mc:Ignorable="d"
         FontSize="11pt"
-        Title="My Awesome Game" Height="768" Width="1024">
+        Title="PRG模拟" Height="768" Width="1366">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibility"/>
     </Window.Resources>
@@ -20,7 +20,7 @@
             <ColumnDefinition Width="250"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Content="Menu" Background="AliceBlue"/>
+        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Content="主菜单" Background="AliceBlue"/>
         <Grid Grid.Row="1" Grid.Column="0" Background="Aquamarine">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -37,17 +37,17 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <Label Grid.Row="0" Grid.Column="0" Content="Name:"/>
+            <Label Grid.Row="0" Grid.Column="0" Content="昵称:"/>
             <Label Grid.Row="0" Grid.Column="1" Content="{Binding CurrentPlayer.Name}"/>
-            <Label Grid.Row="1" Grid.Column="0" Content="Class:"/>
+            <Label Grid.Row="1" Grid.Column="0" Content="种族:"/>
             <Label Grid.Row="1" Grid.Column="1" Content="{Binding CurrentPlayer.CharacterClass}"/>
-            <Label Grid.Row="2" Grid.Column="0" Content="Hit points:"/>
+            <Label Grid.Row="2" Grid.Column="0" Content="攻击点:"/>
             <Label Grid.Row="2" Grid.Column="1" Content="{Binding CurrentPlayer.HitPoints}"/>
-            <Label Grid.Row="3" Grid.Column="0" Content="Assets:"/>
+            <Label Grid.Row="3" Grid.Column="0" Content="财产:"/>
             <Label Grid.Row="3" Grid.Column="1" Content="{Binding CurrentPlayer.Assets}"/>
-            <Label Grid.Row="4" Grid.Column="0" Content="XP:"/>
+            <Label Grid.Row="4" Grid.Column="0" Content="经验值:"/>
             <Label Grid.Row="4" Grid.Column="1" Content="{Binding CurrentPlayer.ExperiencePoints}"/>
-            <Label Grid.Row="5" Grid.Column="0" Content="Level:"/>
+            <Label Grid.Row="5" Grid.Column="0" Content="等级:"/>
             <Label Grid.Row="5" Grid.Column="1" Content="{Binding CurrentPlayer.Level}"/>
         </Grid>
         <Grid Grid.Row="1" Grid.Column="1"
@@ -87,7 +87,27 @@
 
             </Border>
         </Grid>
-        <Label Grid.Row="2" Grid.Column="0" Content="Inventory/Quests" Background="BurlyWood"/>
+        <Grid Grid.Row="2" Grid.Column="0" Background="BurlyWood">
+            <TabControl>
+                <TabItem Header="角色物品栏">
+                    <DataGrid ItemsSource="{Binding CurrentPlayer.Inventory}"
+                              AutoGenerateColumns="False"
+                              HeadersVisibility="Column">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="物品描述"
+                                                Binding="{Binding Name}"
+                                                Width="*"/>
+                            <DataGridTextColumn Header="价值"
+                                                Binding="{Binding Price}"
+                                                Width="Auto"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </TabItem>
+                <TabItem Header="Quests">
+                    
+                </TabItem>
+            </TabControl>
+        </Grid>
         <Label Grid.Row="2" Grid.Column="1" Content="Combat/Movement Controls" Background="Lavender"/>
         <Grid Grid.Row="2" Grid.Column="1" Background="Lavender">
             <Grid.RowDefinitions>
@@ -114,19 +134,20 @@
 
                 <Button Grid.Row="0" Grid.Column="1" Height="25" Width="65" Margin="10"
                         Click="Button_Click_MoveNorth"
-                        Visibility="{Binding HasLocationToNorth, Converter={StaticResource BooleanToVisibility}}"  Content="North"/>
+                        Visibility="{Binding HasLocationToNorth, Converter={StaticResource BooleanToVisibility}}"
+                        Content="向北"/>
                 <Button Grid.Row="1" Grid.Column="0" Height="25" Width="65" Margin="10"
                         Click="Button_Click_MoveWest"
                         Visibility="{Binding HasLocationToWest, Converter={StaticResource BooleanToVisibility}}"  
-                        Content="West"/>
+                        Content="向西"/>
                 <Button Grid.Row="1" Grid.Column="2" Height="25" Width="65" Margin="10"
                         Click="Button_Click_MoveEast"
                         Visibility="{Binding HasLocationToEast, Converter={StaticResource BooleanToVisibility}}"  
-                        Content="East"/>
+                        Content="向东"/>
                 <Button Grid.Row="2" Grid.Column="1" Height="25" Width="65" Margin="10"
                         Click="Button_Click_MoveSouth"
                         Visibility="{Binding HasLocationToSouth, Converter={StaticResource BooleanToVisibility}}"  
-                        Content="South"/>
+                        Content="向南"/>
             </Grid>
             
         </Grid>
