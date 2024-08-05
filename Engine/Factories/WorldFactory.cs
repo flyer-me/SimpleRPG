@@ -37,6 +37,7 @@ namespace Engine.Factories
             newWorld.AddLocation(0, 2, "草药师的花园",
                 "草木茂盛，有蛇盘踞其中。",
                 "pack://application:,,,/Engine;component/Images/Locations/HerbalistsGarden.png");
+            newWorld.LocationAt(0,2).QuestsAvailableHere.Add(QuestFactory.GetQuestByID(1));
             return newWorld;
         }
     }
