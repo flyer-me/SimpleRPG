@@ -54,4 +54,8 @@
     </Resource>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Images\Monsters\" />
+  </ItemGroup>
+
 </Project>
