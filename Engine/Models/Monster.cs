@@ -11,6 +11,7 @@ namespace Engine.Models
     {
         private int _hitPoints;
         public string Name { get; private set; }
+        public string ImageName { get; private set; }
         public int MaximumHitPoints { get; private set; }
         public int HitPoints
         {
@@ -29,7 +30,7 @@ namespace Engine.Models
             int hitPoints, int rewardExperiencePoints, int rewardAssets)
         {
             Name = name;
-            imageName = string.Format("pack://application:,,,/Engine;component/Images/Monsters/{0}", imageName);
+            ImageName = string.Format("pack://application:,,,/Engine;component/Images/Monsters/{0}", imageName);
             MaximumHitPoints = maximumHitPoints;
             HitPoints = hitPoints;
             RewardExperiencePoints = rewardExperiencePoints;
