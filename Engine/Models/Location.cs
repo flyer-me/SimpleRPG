@@ -18,7 +18,6 @@ namespace Engine.Models
 
         public List<MonsterEncounter> MonstersHere { get; set; } = new List<MonsterEncounter>();
 
-        // 为当前Location更新MonsterEncounter列表
         public void UpdateMonsterEncounter(int monsterID, int chanceOfEncountering)
         {
             if (MonstersHere.Exists(m => m.MonsterID == monsterID))
@@ -34,7 +33,9 @@ namespace Engine.Models
             }
         }
 
-        // 
+        /// <summary>
+        /// 由本Location的所有Monster生成概率，随机生成一个Monster
+        /// </summary>
         public Monster GetMonster()
         {
             if (!MonstersHere.Any())
@@ -42,9 +43,7 @@ namespace Engine.Models
                 return null;
             }
 
-            // 计算这个位置的所有怪物的生成概率总和
             int totalChances = MonstersHere.Sum(m => m.ChanceOfEncountering);
-            // 选择1到总和之间的一个随机数
             int randomNumber = RandomNumberGenerator.NumberBetween(1, totalChances);
 
             // 累加生成概率，直到它大于随机数的值，生成当前对应怪物
