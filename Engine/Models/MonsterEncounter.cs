@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Engine.Models
 {
+    // 用于存储怪物生成概率
     public class MonsterEncounter
     {
         public int MonsterID { get; set; }

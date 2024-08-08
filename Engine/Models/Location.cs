@@ -18,17 +18,18 @@ namespace Engine.Models
 
         public List<MonsterEncounter> MonstersHere { get; set; } = new List<MonsterEncounter>();
 
-        public void AddMonsters(int monsterID, int chanceOfEncountering)
+        // 为当前Location更新MonsterEncounter列表
+        public void UpdateMonsterEncounter(int monsterID, int chanceOfEncountering)
         {
             if (MonstersHere.Exists(m => m.MonsterID == monsterID))
             {
-                // 如果怪物已经在这个位置，更新它的生成概率
+                // 如果Monster已经在这个位置，更新它的生成概率
                 MonstersHere.First(m => m.MonsterID == monsterID)
                             .ChanceOfEncountering = chanceOfEncountering;
             }
             else
             {
-                // 否则，将怪物添加到这个位置
+                // 否则，在此位置添加该Monster的生成概率
                 MonstersHere.Add(new MonsterEncounter(monsterID, chanceOfEncountering));
             }
         }
