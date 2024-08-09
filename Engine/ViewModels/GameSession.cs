@@ -54,6 +54,8 @@ namespace Engine.ViewModels
             }
         }
 
+        public Weapon CurrentWeapon { get; set; }
+
         public bool HasLocationToNorth
         {
             get
@@ -98,7 +100,10 @@ namespace Engine.ViewModels
                                 ExperiencePoints = 0,
                                 Level = 1
                             };
-
+            if (!CurrentPlayer.Weapons.Any())
+            {
+                CurrentPlayer.AddItemToInventory(ItemFactory.CreateGameItem(1001));
+            }
             CurrentWorld = WorldFactory.CreateWorld();
 
             CurrentLocation = CurrentWorld.LocationAt(0, 0);
@@ -150,6 +155,69 @@ namespace Engine.ViewModels
             CurrentMonster = CurrentLocation.GetMonster();
         }
 
+        public void AttackCurrentMonster()
+        {
+            if (CurrentMonster == null)
+            {
+                RaiseMessage("你必须选择一个武器来产生攻击");
+                return;
+            }
+
+            int damageToMonster = RandomNumberGenerator.NumberBetween(CurrentWeapon.MinimumDamage, CurrentWeapon.MaximumDamage);
+
+            if (damageToMonster <= 0)
+            {
+                RaiseMessage($"{CurrentMonster.Name}躲过攻击");
+            }
+            else
+            {
+                CurrentMonster.HitPoints -= damageToMonster;
+                RaiseMessage($"对{CurrentMonster.Name}造成{damageToMonster}点伤害");
+            }
+
+            if (CurrentMonster.HitPoints <= 0)
+            {
+                RaiseMessage("");
+                RaiseMessage($"已击败 {CurrentMonster.Name}!");
+                CurrentPlayer.ExperiencePoints += CurrentMonster.RewardExperiencePoints;
+                RaiseMessage($"+{CurrentMonster.RewardExperiencePoints}经验点");
+                CurrentPlayer.Assets += CurrentMonster.RewardAssets;
+                RaiseMessage($"+{CurrentMonster.RewardAssets}钱币.");
+
+                foreach (ItemQuantity itemQuantity in CurrentMonster.Inventory)
+                {
+                    GameItem item = ItemFactory.CreateGameItem(itemQuantity.ItemID);
+                    CurrentPlayer.AddItemToInventory(item);
+                    RaiseMessage($"获得：{itemQuantity.Quantity} {item.Name}.");
+                }
+                // 再次生成 Monster
+                GetMonsterAtLocation();
+            }
+            else
+            {
+                // 轮到Monster 攻击 Player
+                int damageToPlayer = RandomNumberGenerator.NumberBetween(CurrentMonster.MinimumDamage, CurrentMonster.MaximumDamage);
+
+                if (damageToPlayer <= 0)
+                {
+                    RaiseMessage("躲过攻击");
+                }
+                else
+                {
+                    CurrentPlayer.HitPoints -= damageToPlayer;
+                    RaiseMessage($"{CurrentMonster.Name} 对你造成 {damageToPlayer} 点伤害");
+                }
+                // 受击点数<=0 Player 返回出生点
+                if (CurrentPlayer.HitPoints <= 0)
+                {
+                    RaiseMessage("");
+                    RaiseMessage($"你被 {CurrentMonster.Name} 杀死了！");
+                    CurrentLocation = CurrentWorld.LocationAt(0, -1);
+                    CurrentPlayer.HitPoints = CurrentPlayer.Level * 10;
+                }
+            }
+
+        }
         private void RaiseMessage(string message)
         {
             OnMessageRaised?.Invoke(this, new GameMessageEventArgs(message));
