@@ -9,13 +9,11 @@ namespace Engine.Factories
 {
     public static class ItemFactory
     {
-        private static List<GameItem> _standardGameItems;
+        private static readonly List<GameItem> _standardGameItems = new List<GameItem>();
         static ItemFactory()
         {
-            _standardGameItems = new List<GameItem>();
-
             _standardGameItems.Add(new Weapon(1001, "木矛", 1, 1, 2));
-            _standardGameItems.Add(new Weapon(1002, "锈剑", 5, 1, 3));
+            _standardGameItems.Add(new Weapon(1002, "生锈的剑", 5, 1, 3));
             _standardGameItems.Add(new GameItem(9001, "蛇牙", 1));
             _standardGameItems.Add(new GameItem(9002, "蛇皮", 2));
             _standardGameItems.Add(new GameItem(9003, "鼠尾", 1));
