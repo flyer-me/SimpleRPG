@@ -33,7 +33,7 @@ namespace Engine.Models
             int rewardExperiencePoints, int rewardAssets)
         {
             Name = name;
-            ImageName = string.Format("pack://application:,,,/Engine;component/Images/Monsters/{0}", imageName);
+            ImageName = $"pack://application:,,,/Engine;component/Images/Monsters/{imageName}";
             MaximumHitPoints = maximumHitPoints;
             HitPoints = hitPoints;
             MinimumDamage = minimumDamage;
