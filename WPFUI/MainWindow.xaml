@@ -18,7 +18,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="225"/>
         </Grid.RowDefinitions>
-        
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="250"/>
             <ColumnDefinition Width="*"/>
@@ -46,7 +46,7 @@
             <Label Grid.Row="0" Grid.Column="1" Content="{Binding CurrentPlayer.Name}"/>
             <Label Grid.Row="1" Grid.Column="0" Content="种族:"/>
             <Label Grid.Row="1" Grid.Column="1" Content="{Binding CurrentPlayer.CharacterClass}"/>
-            <Label Grid.Row="2" Grid.Column="0" Content="攻击点:"/>
+            <Label Grid.Row="2" Grid.Column="0" Content="受击点:"/>
             <Label Grid.Row="2" Grid.Column="1" Content="{Binding CurrentPlayer.HitPoints}"/>
             <Label Grid.Row="3" Grid.Column="0" Content="钱币:"/>
             <Label Grid.Row="3" Grid.Column="1" Content="{Binding CurrentPlayer.Assets}"/>
@@ -67,7 +67,7 @@
                 <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
-            
+
             <!-- 游戏信息 -->
             <Border Grid.Row="0" Grid.Column="0"
                     Grid.RowSpan="2"
@@ -83,7 +83,7 @@
                     </RichTextBox.Resources>
                 </RichTextBox>
             </Border>
-            
+
             <!-- Location信息 -->
             <Border Grid.Row="0" Grid.Column="1"
                     BorderBrush="Gainsboro"
@@ -155,7 +155,7 @@
                         </DataGrid.Columns>
                     </DataGrid>
                 </TabItem>
-                
+
                 <TabItem Header="任务">
                     <DataGrid ItemsSource="{Binding CurrentPlayer.Quests}"
                               AutoGenerateColumns="False"
@@ -188,18 +188,18 @@
                   Visibility="{Binding HasMonster, Converter={StaticResource BooleanToVisibility}}"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center">
-                
+
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                
+
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="150"/>
                     <ColumnDefinition Width="10"/>
                     <ColumnDefinition Width="50"/>
                 </Grid.ColumnDefinitions>
-                
+
                 <ComboBox Grid.Row="0" Grid.Column="0"
                           ItemsSource="{Binding CurrentPlayer.Weapons}"
                           SelectedItem="{Binding CurrentWeapon}"
@@ -230,18 +230,18 @@
                         Content="向北"/>
                 <Button Grid.Row="1" Grid.Column="0" Height="25" Width="65" Margin="10"
                         Click="Button_Click_MoveWest"
-                        Visibility="{Binding HasLocationToWest, Converter={StaticResource BooleanToVisibility}}"  
+                        Visibility="{Binding HasLocationToWest, Converter={StaticResource BooleanToVisibility}}"
                         Content="向西"/>
                 <Button Grid.Row="1" Grid.Column="2" Height="25" Width="65" Margin="10"
                         Click="Button_Click_MoveEast"
-                        Visibility="{Binding HasLocationToEast, Converter={StaticResource BooleanToVisibility}}"  
+                        Visibility="{Binding HasLocationToEast, Converter={StaticResource BooleanToVisibility}}"
                         Content="向东"/>
                 <Button Grid.Row="2" Grid.Column="1" Height="25" Width="65" Margin="10"
                         Click="Button_Click_MoveSouth"
-                        Visibility="{Binding HasLocationToSouth, Converter={StaticResource BooleanToVisibility}}"  
+                        Visibility="{Binding HasLocationToSouth, Converter={StaticResource BooleanToVisibility}}"
                         Content="向南"/>
             </Grid>
-            
+
         </Grid>
     </Grid>
 </Window>
