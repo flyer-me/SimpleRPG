@@ -31,6 +31,7 @@ namespace Engine.ViewModels
                 OnPropertyChanged(nameof(HasLocationToWest));
                 OnPropertyChanged(nameof(HasLocationToEast));
 
+                CompleteQuestsAtLocation();
                 GivePlayerQuestAtLocation();
                 GetMonsterAtLocation();
             }
@@ -119,6 +120,46 @@ namespace Engine.ViewModels
             }
         }
 
+        private void CompleteQuestsAtLocation()
+        {
+            foreach(Quest quest in CurrentLocation.QuestsAvailableHere)
+            {
+                QuestStatus questToComplete =
+                    CurrentPlayer.Quests.FirstOrDefault(q => q.PlayerQuest.Id == quest.Id &&
+                                                             !q.IsCompleted);
+                if(questToComplete != null)
+                {
+                    if(CurrentPlayer.HasAllTheseItems(quest.ItemsToComplete))
+                    {
+                        // 物品栏移除任务需要物品
+                        foreach (ItemQuantity itemQuantity in quest.ItemsToComplete)
+                        {
+                            for(int i = 0; i < itemQuantity.Quantity; i++)
+                            {
+                                CurrentPlayer.RemoveItemsFromInventory(CurrentPlayer.Inventory.First(item => item.ItemTypeID == itemQuantity.ItemID));
+                            }
+                        }
+                        RaiseMessage("");
+                        RaiseMessage($"'{quest.Name}'：任务完成。");
+                        // 角色增加奖励
+                        CurrentPlayer.ExperiencePoints += quest.RewardExperiencePoints;
+                        RaiseMessage($"+{quest.RewardExperiencePoints}经验值");
+                        CurrentPlayer.Assets += quest.RewardAssets;
+                        RaiseMessage($"+{quest.RewardAssets}钱币");
+                        // 物品栏增加奖励物品
+                        foreach(ItemQuantity itemQuantity in quest.RewardItems)
+                        {
+                            GameItem rewardItem = ItemFactory.CreateGameItem(itemQuantity.ItemID);
+                            CurrentPlayer.AddItemToInventory(rewardItem);
+                            RaiseMessage($"获得：{rewardItem.Name}");
+                        }
+                        // 标记任务完成
+                        questToComplete.IsCompleted = true;
+                    }
+                }
+            }
+        }
+
         private void GivePlayerQuestAtLocation()
         {
             foreach (Quest quest in CurrentLocation.QuestsAvailableHere)
@@ -126,6 +167,21 @@ namespace Engine.ViewModels
                 if (!CurrentPlayer.Quests.Any(q => q.PlayerQuest.Id == quest.Id))
                 {
                     CurrentPlayer.Quests.Add(new QuestStatus(quest));
+                    RaiseMessage("");
+                    RaiseMessage($"收到任务：'{quest.Name}'");
+                    RaiseMessage(quest.Description);
+                    RaiseMessage("收集物品：");
+                    foreach(ItemQuantity itemQuantity in quest.ItemsToComplete)
+                    {
+                        RaiseMessage($"   {itemQuantity.Quantity} {ItemFactory.CreateGameItem(itemQuantity.ItemID).Name}");
+                    }
+                    RaiseMessage("报酬：");
+                    RaiseMessage($"   {quest.RewardExperiencePoints}经验值");
+                    RaiseMessage($"   {quest.RewardAssets}钱币");
+                    foreach(ItemQuantity itemQuantity in quest.RewardItems)
+                    {
+                        RaiseMessage($"   {itemQuantity.Quantity} {ItemFactory.CreateGameItem(itemQuantity.ItemID).Name}");
+                    }
                 }
             }
         }
@@ -139,7 +195,7 @@ namespace Engine.ViewModels
         {
             if (CurrentMonster == null)
             {
-                RaiseMessage("你必须选择一个武器来产生攻击");
+                RaiseMessage("你必须选择一个武器来进行攻击");
                 return;
             }
 
@@ -162,13 +218,13 @@ namespace Engine.ViewModels
                 CurrentPlayer.ExperiencePoints += CurrentMonster.RewardExperiencePoints;
                 RaiseMessage($"+{CurrentMonster.RewardExperiencePoints}经验点");
                 CurrentPlayer.Assets += CurrentMonster.RewardAssets;
-                RaiseMessage($"+{CurrentMonster.RewardAssets}钱币.");
+                RaiseMessage($"+{CurrentMonster.RewardAssets}钱币");
 
                 foreach (ItemQuantity itemQuantity in CurrentMonster.Inventory)
                 {
                     GameItem item = ItemFactory.CreateGameItem(itemQuantity.ItemID);
                     CurrentPlayer.AddItemToInventory(item);
-                    RaiseMessage($"获得：{itemQuantity.Quantity} {item.Name}.");
+                    RaiseMessage($"获得：{itemQuantity.Quantity} {item.Name}");
                 }
                 // 再次生成 Monster
                 GetMonsterAtLocation();
@@ -187,7 +243,7 @@ namespace Engine.ViewModels
                     CurrentPlayer.HitPoints -= damageToPlayer;
                     RaiseMessage($"{CurrentMonster.Name} 对你造成 {damageToPlayer} 点伤害");
                 }
-                // 受击点数<=0 Player 返回出生点
+                // Player 返回出生点
                 if (CurrentPlayer.HitPoints <= 0)
                 {
                     RaiseMessage("");

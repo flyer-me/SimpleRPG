@@ -16,7 +16,7 @@ namespace Engine.Factories
                 case 1:
                     Monster snake =
                         new Monster("蛇", "Snake.png", 4, 4, 1, 2, 5, 1);
-                    AddLootItem(snake, 9001, 25);
+                    AddLootItem(snake, 9001, 75);
                     AddLootItem(snake, 9002, 75);
 
                     return snake;

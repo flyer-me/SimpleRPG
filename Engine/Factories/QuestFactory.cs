@@ -21,7 +21,7 @@ namespace Engine.Factories
 
             _quests.Add(new Quest(1,
                                   "清理草药师的花园",
-                                  "杀死所有的蛇（0/5）",
+                                  "杀死蛇（0/5）",
                                   itemsToComplete,
                                   25, 10,
                                   rewardItems));
