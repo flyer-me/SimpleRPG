@@ -13,9 +13,10 @@ namespace WPFUI
         {
             InitializeComponent();
         }
+
         private void OnClick_Sell(object sender, RoutedEventArgs e)
         {
-            GameItem item = ((FrameworkElement)sender).DataContext as GameItem;
+            GameItem? item = ((FrameworkElement)sender).DataContext as GameItem;
             if(item != null)
             {
                 Session.CurrentPlayer.Assets += item.Price;
@@ -25,7 +26,7 @@ namespace WPFUI
         }
         private void OnClick_Buy(object sender, RoutedEventArgs e)
         {
-            GameItem item = ((FrameworkElement)sender).DataContext as GameItem;
+            GameItem? item = ((FrameworkElement)sender).DataContext as GameItem;
             if(item != null)
             {
                 if(Session.CurrentPlayer.Assets >= item.Price)
@@ -36,7 +37,7 @@ namespace WPFUI
                 }
                 else
                 {
-                    MessageBox.Show("You do not have enough gold");
+                    MessageBox.Show("金钱不够");
                 }
             }
         }
