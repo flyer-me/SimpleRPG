@@ -53,7 +53,7 @@ namespace Engine.ViewModels
                 if (CurrentMonster != null)
                 {
                     RaiseMessage("");
-                    RaiseMessage($"{CurrentMonster.Name} ³öÏÖÁË!");
+                    RaiseMessage($"{CurrentMonster.Name} ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½!");
                 }
             }
         }
@@ -149,29 +149,29 @@ namespace Engine.ViewModels
                 {
                     if(CurrentPlayer.HasAllTheseItems(quest.ItemsToComplete))
                     {
-                        // ÎïÆ·À¸ÒÆ³ýÈÎÎñÐèÒªÎïÆ·
+                        // ï¿½ï¿½Æ·ï¿½ï¿½ï¿½Æ³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½Æ·
                         foreach (ItemQuantity itemQuantity in quest.ItemsToComplete)
                         {
                             for(int i = 0; i < itemQuantity.Quantity; i++)
                             {
-                                CurrentPlayer.RemoveItemsFromInventory(CurrentPlayer.Inventory.First(item => item.ItemTypeID == itemQuantity.ItemID));
+                                CurrentPlayer.RemoveItemFromInventory(CurrentPlayer.Inventory.First(item => item.ItemTypeID == itemQuantity.ItemID));
                             }
                         }
                         RaiseMessage("");
-                        RaiseMessage($"'{quest.Name}'£ºÈÎÎñÍê³É¡£");
-                        // ½ÇÉ«Ôö¼Ó½±Àø
+                        RaiseMessage($"'{quest.Name}'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¡ï¿½");
+                        // ï¿½ï¿½É«ï¿½ï¿½ï¿½Ó½ï¿½ï¿½ï¿½
                         CurrentPlayer.ExperiencePoints += quest.RewardExperiencePoints;
-                        RaiseMessage($"+{quest.RewardExperiencePoints}¾­ÑéÖµ");
+                        RaiseMessage($"+{quest.RewardExperiencePoints}ï¿½ï¿½ï¿½ï¿½Öµ");
                         CurrentPlayer.Assets += quest.RewardAssets;
-                        RaiseMessage($"+{quest.RewardAssets}Ç®±Ò");
-                        // ÎïÆ·À¸Ôö¼Ó½±ÀøÎïÆ·
+                        RaiseMessage($"+{quest.RewardAssets}Ç®ï¿½ï¿½");
+                        // ï¿½ï¿½Æ·ï¿½ï¿½ï¿½ï¿½ï¿½Ó½ï¿½ï¿½ï¿½ï¿½ï¿½Æ·
                         foreach(ItemQuantity itemQuantity in quest.RewardItems)
                         {
                             GameItem rewardItem = ItemFactory.CreateGameItem(itemQuantity.ItemID);
                             CurrentPlayer.AddItemToInventory(rewardItem);
-                            RaiseMessage($"»ñµÃ£º{rewardItem.Name}");
+                            RaiseMessage($"ï¿½ï¿½Ã£ï¿½{rewardItem.Name}");
                         }
-                        // ±ê¼ÇÈÎÎñÍê³É
+                        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                         questToComplete.IsCompleted = true;
                     }
                 }
@@ -186,16 +186,16 @@ namespace Engine.ViewModels
                 {
                     CurrentPlayer.Quests.Add(new QuestStatus(quest));
                     RaiseMessage("");
-                    RaiseMessage($"ÊÕµ½ÈÎÎñ£º'{quest.Name}'");
+                    RaiseMessage($"ï¿½Õµï¿½ï¿½ï¿½ï¿½ï¿½'{quest.Name}'");
                     RaiseMessage(quest.Description);
-                    RaiseMessage("ÊÕ¼¯ÎïÆ·£º");
+                    RaiseMessage("ï¿½Õ¼ï¿½ï¿½ï¿½Æ·ï¿½ï¿½");
                     foreach(ItemQuantity itemQuantity in quest.ItemsToComplete)
                     {
                         RaiseMessage($"   {itemQuantity.Quantity} {ItemFactory.CreateGameItem(itemQuantity.ItemID).Name}");
                     }
-                    RaiseMessage("±¨³ê£º");
-                    RaiseMessage($"   {quest.RewardExperiencePoints}¾­ÑéÖµ");
-                    RaiseMessage($"   {quest.RewardAssets}Ç®±Ò");
+                    RaiseMessage("ï¿½ï¿½ï¿½ê£º");
+                    RaiseMessage($"   {quest.RewardExperiencePoints}ï¿½ï¿½ï¿½ï¿½Öµ");
+                    RaiseMessage($"   {quest.RewardAssets}Ç®ï¿½ï¿½");
                     foreach(ItemQuantity itemQuantity in quest.RewardItems)
                     {
                         RaiseMessage($"   {itemQuantity.Quantity} {ItemFactory.CreateGameItem(itemQuantity.ItemID).Name}");
@@ -213,7 +213,7 @@ namespace Engine.ViewModels
         {
             if (CurrentMonster == null)
             {
-                RaiseMessage("Äã±ØÐëÑ¡ÔñÒ»¸öÎäÆ÷À´½øÐÐ¹¥»÷");
+                RaiseMessage("ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¹ï¿½ï¿½ï¿½");
                 return;
             }
 
@@ -221,51 +221,51 @@ namespace Engine.ViewModels
 
             if (damageToMonster <= 0)
             {
-                RaiseMessage($"{CurrentMonster.Name}¶ã¹ý¹¥»÷");
+                RaiseMessage($"{CurrentMonster.Name}ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
             }
             else
             {
                 CurrentMonster.HitPoints -= damageToMonster;
-                RaiseMessage($"¶Ô{CurrentMonster.Name}Ôì³É{damageToMonster}µãÉËº¦");
+                RaiseMessage($"ï¿½ï¿½{CurrentMonster.Name}ï¿½ï¿½ï¿½{damageToMonster}ï¿½ï¿½ï¿½Ëºï¿½");
             }
 
             if (CurrentMonster.HitPoints <= 0)
             {
                 RaiseMessage("");
-                RaiseMessage($"ÒÑ»÷°Ü {CurrentMonster.Name}!");
+                RaiseMessage($"ï¿½Ñ»ï¿½ï¿½ï¿½ {CurrentMonster.Name}!");
                 CurrentPlayer.ExperiencePoints += CurrentMonster.RewardExperiencePoints;
-                RaiseMessage($"+{CurrentMonster.RewardExperiencePoints}¾­Ñéµã");
+                RaiseMessage($"+{CurrentMonster.RewardExperiencePoints}ï¿½ï¿½ï¿½ï¿½ï¿½");
                 CurrentPlayer.Assets += CurrentMonster.RewardAssets;
-                RaiseMessage($"+{CurrentMonster.RewardAssets}Ç®±Ò");
+                RaiseMessage($"+{CurrentMonster.RewardAssets}Ç®ï¿½ï¿½");
 
                 foreach (ItemQuantity itemQuantity in CurrentMonster.Inventory)
                 {
                     GameItem item = ItemFactory.CreateGameItem(itemQuantity.ItemID);
                     CurrentPlayer.AddItemToInventory(item);
-                    RaiseMessage($"»ñµÃ£º{itemQuantity.Quantity} {item.Name}");
+                    RaiseMessage($"ï¿½ï¿½Ã£ï¿½{itemQuantity.Quantity} {item.Name}");
                 }
-                // ÔÙ´ÎÉú³É Monster
+                // ï¿½Ù´ï¿½ï¿½ï¿½ï¿½ï¿½ Monster
                 GetMonsterAtLocation();
             }
             else
             {
-                // ÂÖµ½Monster ¹¥»÷ Player
+                // ï¿½Öµï¿½Monster ï¿½ï¿½ï¿½ï¿½ Player
                 int damageToPlayer = RandomNumberGenerator.NumberBetween(CurrentMonster.MinimumDamage, CurrentMonster.MaximumDamage);
 
                 if (damageToPlayer <= 0)
                 {
-                    RaiseMessage("¶ã¹ý¹¥»÷");
+                    RaiseMessage("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
                 }
                 else
                 {
                     CurrentPlayer.HitPoints -= damageToPlayer;
-                    RaiseMessage($"{CurrentMonster.Name} ¶ÔÄãÔì³É {damageToPlayer} µãÉËº¦");
+                    RaiseMessage($"{CurrentMonster.Name} ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ {damageToPlayer} ï¿½ï¿½ï¿½Ëºï¿½");
                 }
-                // Player ·µ»Ø³öÉúµã
+                // Player ï¿½ï¿½ï¿½Ø³ï¿½ï¿½ï¿½ï¿½ï¿½
                 if (CurrentPlayer.HitPoints <= 0)
                 {
                     RaiseMessage("");
-                    RaiseMessage($"Äã±» {CurrentMonster.Name} É±ËÀÁË£¡");
+                    RaiseMessage($"ï¿½ã±» {CurrentMonster.Name} É±ï¿½ï¿½ï¿½Ë£ï¿½");
                     CurrentLocation = CurrentWorld.LocationAt(0, -1);
                     CurrentPlayer.HitPoints = CurrentPlayer.Level * 10;
                 }
