@@ -1,3 +1,4 @@
+// encoding: utf-8
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,7 +54,7 @@ namespace Engine.ViewModels
                 if (CurrentMonster != null)
                 {
                     RaiseMessage("");
-                    RaiseMessage($"{CurrentMonster.Name} ������!");
+                    RaiseMessage($"{CurrentMonster.Name} 出现了!");
                 }
             }
         }
@@ -94,7 +95,7 @@ namespace Engine.ViewModels
                             {
                                 Name = "Admin",
                                 CharacterClass = "Fighter",
-                                HitPoints = 10,
+                                CurrentHitPoints = 10,
                                 Assets = 10000,
                                 ExperiencePoints = 0,
                                 Level = 1
@@ -142,14 +143,14 @@ namespace Engine.ViewModels
         {
             foreach(Quest quest in CurrentLocation.QuestsAvailableHere)
             {
-                QuestStatus questToComplete =
+                QuestStatus? questToComplete =
                     CurrentPlayer.Quests.FirstOrDefault(q => q.PlayerQuest.Id == quest.Id &&
                                                              !q.IsCompleted);
                 if(questToComplete != null)
                 {
                     if(CurrentPlayer.HasAllTheseItems(quest.ItemsToComplete))
                     {
-                        // ��Ʒ���Ƴ�������Ҫ��Ʒ
+                        // 去除物品以完成任务
                         foreach (ItemQuantity itemQuantity in quest.ItemsToComplete)
                         {
                             for(int i = 0; i < itemQuantity.Quantity; i++)
@@ -158,20 +159,20 @@ namespace Engine.ViewModels
                             }
                         }
                         RaiseMessage("");
-                        RaiseMessage($"'{quest.Name}'��������ɡ�");
-                        // ��ɫ���ӽ���
+                        RaiseMessage($"'{quest.Name}'任务完成");
+
                         CurrentPlayer.ExperiencePoints += quest.RewardExperiencePoints;
-                        RaiseMessage($"+{quest.RewardExperiencePoints}����ֵ");
+                        RaiseMessage($"+{quest.RewardExperiencePoints}经验点");
                         CurrentPlayer.Assets += quest.RewardAssets;
-                        RaiseMessage($"+{quest.RewardAssets}Ǯ��");
-                        // ��Ʒ�����ӽ�����Ʒ
+                        RaiseMessage($"+{quest.RewardAssets}钱币");
+
                         foreach(ItemQuantity itemQuantity in quest.RewardItems)
                         {
                             GameItem rewardItem = ItemFactory.CreateGameItem(itemQuantity.ItemID);
                             CurrentPlayer.AddItemToInventory(rewardItem);
-                            RaiseMessage($"��ã�{rewardItem.Name}");
+                            RaiseMessage($"获得：{rewardItem.Name}");
                         }
-                        // ����������
+
                         questToComplete.IsCompleted = true;
                     }
                 }
@@ -186,16 +187,16 @@ namespace Engine.ViewModels
                 {
                     CurrentPlayer.Quests.Add(new QuestStatus(quest));
                     RaiseMessage("");
-                    RaiseMessage($"�յ�����'{quest.Name}'");
+                    RaiseMessage($"收到任务：'{quest.Name}'");
                     RaiseMessage(quest.Description);
-                    RaiseMessage("�ռ���Ʒ��");
+                    RaiseMessage("所需物品：");
                     foreach(ItemQuantity itemQuantity in quest.ItemsToComplete)
                     {
                         RaiseMessage($"   {itemQuantity.Quantity} {ItemFactory.CreateGameItem(itemQuantity.ItemID).Name}");
                     }
-                    RaiseMessage("���꣺");
-                    RaiseMessage($"   {quest.RewardExperiencePoints}����ֵ");
-                    RaiseMessage($"   {quest.RewardAssets}Ǯ��");
+                    RaiseMessage("奖励：");
+                    RaiseMessage($"   {quest.RewardExperiencePoints}经验点");
+                    RaiseMessage($"   {quest.RewardAssets}钱币");
                     foreach(ItemQuantity itemQuantity in quest.RewardItems)
                     {
                         RaiseMessage($"   {itemQuantity.Quantity} {ItemFactory.CreateGameItem(itemQuantity.ItemID).Name}");
@@ -211,9 +212,9 @@ namespace Engine.ViewModels
 
         public void AttackCurrentMonster()
         {
-            if (CurrentMonster == null)
+            if (CurrentWeapon == null)
             {
-                RaiseMessage("�����ѡ��һ�����������й���");
+                RaiseMessage("需要选择武器以进行攻击");
                 return;
             }
 
@@ -221,53 +222,52 @@ namespace Engine.ViewModels
 
             if (damageToMonster <= 0)
             {
-                RaiseMessage($"{CurrentMonster.Name}�������");
+                RaiseMessage($"{CurrentMonster.Name}躲过攻击");
             }
             else
             {
-                CurrentMonster.HitPoints -= damageToMonster;
-                RaiseMessage($"��{CurrentMonster.Name}���{damageToMonster}���˺�");
+                CurrentMonster.CurrentHitPoints -= damageToMonster;
+                RaiseMessage($"对{CurrentMonster.Name}造成{damageToMonster}点伤害");
             }
 
-            if (CurrentMonster.HitPoints <= 0)
+            if (CurrentMonster.CurrentHitPoints <= 0)
             {
                 RaiseMessage("");
-                RaiseMessage($"�ѻ��� {CurrentMonster.Name}!");
+                RaiseMessage($"击败 {CurrentMonster.Name}!");
                 CurrentPlayer.ExperiencePoints += CurrentMonster.RewardExperiencePoints;
-                RaiseMessage($"+{CurrentMonster.RewardExperiencePoints}�����");
-                CurrentPlayer.Assets += CurrentMonster.RewardAssets;
-                RaiseMessage($"+{CurrentMonster.RewardAssets}Ǯ��");
+                RaiseMessage($"+{CurrentMonster.RewardExperiencePoints}经验点");
+                CurrentPlayer.Assets += CurrentMonster.Assets;
+                RaiseMessage($"+{CurrentMonster.Assets}钱币");
 
-                foreach (ItemQuantity itemQuantity in CurrentMonster.Inventory)
+                foreach (GameItem gameItem in CurrentMonster.Inventory)
                 {
-                    GameItem item = ItemFactory.CreateGameItem(itemQuantity.ItemID);
-                    CurrentPlayer.AddItemToInventory(item);
-                    RaiseMessage($"��ã�{itemQuantity.Quantity} {item.Name}");
+                    CurrentPlayer.AddItemToInventory(gameItem);
+                    RaiseMessage($"获得：{gameItem.Name}");
                 }
-                // �ٴ����� Monster
+                // 生成 Monster
                 GetMonsterAtLocation();
             }
             else
             {
-                // �ֵ�Monster ���� Player
+                // Monster 攻击 Player
                 int damageToPlayer = RandomNumberGenerator.NumberBetween(CurrentMonster.MinimumDamage, CurrentMonster.MaximumDamage);
 
                 if (damageToPlayer <= 0)
                 {
-                    RaiseMessage("�������");
+                    RaiseMessage("你躲过攻击");
                 }
                 else
                 {
-                    CurrentPlayer.HitPoints -= damageToPlayer;
-                    RaiseMessage($"{CurrentMonster.Name} ������� {damageToPlayer} ���˺�");
+                    CurrentPlayer.CurrentHitPoints -= damageToPlayer;
+                    RaiseMessage($"{CurrentMonster.Name} 对你造成 {damageToPlayer} 点伤害");
                 }
-                // Player ���س�����
-                if (CurrentPlayer.HitPoints <= 0)
+                // Player 失败
+                if (CurrentPlayer.CurrentHitPoints <= 0)
                 {
                     RaiseMessage("");
-                    RaiseMessage($"�㱻 {CurrentMonster.Name} ɱ���ˣ�");
+                    RaiseMessage($"{CurrentMonster.Name} 击败了你");
                     CurrentLocation = CurrentWorld.LocationAt(0, -1);
-                    CurrentPlayer.HitPoints = CurrentPlayer.Level * 10;
+                    CurrentPlayer.CurrentHitPoints = CurrentPlayer.Level * 10;
                 }
             }
 
