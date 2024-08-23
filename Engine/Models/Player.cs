@@ -9,11 +9,10 @@ namespace Engine.Models
 {
     public class Player : LivingEntity
     {
-        #region
+        #region Properties
         private string _characterClass;
         private int _experiencePoints;
         private int _level;
-
         public string CharacterClass
         {
             get { return _characterClass; }
@@ -43,13 +42,14 @@ namespace Engine.Models
         }
         public ObservableCollection<QuestStatus> Quests { get; set; }
         #endregion
-
-        public Player()
+        public Player(string name, string characterClass, int experiencePoints,
+                      int maximumHitPoints, int currentHitPoints, int assets) :
+                base(name, maximumHitPoints, currentHitPoints, assets)
         {
-            // Inventory = new ObservableCollection<GameItem>();
+            CharacterClass = characterClass;
+            ExperiencePoints = experiencePoints;
             Quests = new ObservableCollection<QuestStatus>();
         }
-
         public bool HasAllTheseItems(List<ItemQuantity> items)
         {
             foreach (ItemQuantity item in items)

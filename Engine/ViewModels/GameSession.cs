@@ -14,13 +14,29 @@ namespace Engine.ViewModels
     public class GameSession : BaseNotificationClass
     {
         public event EventHandler<GameMessageEventArgs> OnMessageRaised;
-
+        #region Properties
+        private Player _currentPlayer;
         private Location _currentLocation;
         private Monster _currentMonster;
         private Trader _currentTrader;
-
         public World CurrentWorld { get; set; }
-        public Player CurrentPlayer { get; set; }
+        public Player CurrentPlayer
+        {
+            get { return _currentPlayer; }
+            set
+            {
+                if(_currentPlayer != null)
+                {
+                    _currentPlayer.OnKilled -= OnCurrentPlayerKilled;
+                }
+                _currentPlayer = value;
+                if(_currentPlayer != null)
+                {
+                    _currentPlayer.OnKilled += OnCurrentPlayerKilled;
+                }
+                OnPropertyChanged(nameof(CurrentPlayer));
+            }
+        }
         public Location CurrentLocation
         {
             get { return _currentLocation; }
@@ -33,7 +49,6 @@ namespace Engine.ViewModels
                 OnPropertyChanged(nameof(HasLocationToSouth));
                 OnPropertyChanged(nameof(HasLocationToWest));
                 OnPropertyChanged(nameof(HasLocationToEast));
-
                 CompleteQuestsAtLocation();
                 GivePlayerQuestAtLocation();
                 GetMonsterAtLocation();
@@ -46,16 +61,19 @@ namespace Engine.ViewModels
             get { return _currentMonster; }
             set
             {
-                _currentMonster = value;
-
-                OnPropertyChanged(nameof(CurrentMonster));
-                OnPropertyChanged(nameof(HasMonster));
-
-                if (CurrentMonster != null)
+                if(_currentMonster != null)
                 {
+                    _currentMonster.OnKilled -= OnCurrentMonsterKilled;
+                }
+                _currentMonster = value;
+                if(_currentMonster != null)
+                {
+                    _currentMonster.OnKilled += OnCurrentMonsterKilled;
                     RaiseMessage("");
                     RaiseMessage($"{CurrentMonster.Name} 出现了!");
                 }
+                OnPropertyChanged(nameof(CurrentMonster));
+                OnPropertyChanged(nameof(HasMonster));
             }
         }
 
@@ -75,31 +93,18 @@ namespace Engine.ViewModels
 
         public bool HasLocationToNorth =>
             CurrentWorld.LocationAt(CurrentLocation.XCoordinate, CurrentLocation.YCoordinate + 1) != null;
-
         public bool HasLocationToSouth =>
             CurrentWorld.LocationAt(CurrentLocation.XCoordinate, CurrentLocation.YCoordinate - 1) != null;
-
         public bool HasLocationToEast =>
             CurrentWorld.LocationAt(CurrentLocation.XCoordinate + 1, CurrentLocation.YCoordinate) != null;
-
         public bool HasLocationToWest =>
             CurrentWorld.LocationAt(CurrentLocation.XCoordinate - 1, CurrentLocation.YCoordinate) != null;
-
         public bool HasMonster => CurrentMonster != null;
-
         public bool HasTrader => CurrentTrader != null;
-
+        #endregion
         public GameSession()
         {
-            CurrentPlayer = new Player
-                            {
-                                Name = "Admin",
-                                CharacterClass = "Fighter",
-                                CurrentHitPoints = 10,
-                                Assets = 10000,
-                                ExperiencePoints = 0,
-                                Level = 1
-                            };
+            CurrentPlayer = new Player("admin", "Fighter", 0, 10, 10, 1000);
             if (!CurrentPlayer.Weapons.Any())
             {
                 CurrentPlayer.AddItemToInventory(ItemFactory.CreateGameItem(1001));
@@ -116,7 +121,6 @@ namespace Engine.ViewModels
                 CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate, CurrentLocation.YCoordinate + 1);
             }
         }
-
         public void MoveWest()
         {
             if (HasLocationToWest)
@@ -138,7 +142,6 @@ namespace Engine.ViewModels
                 CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate, CurrentLocation.YCoordinate - 1);
             }
         }
-
         private void CompleteQuestsAtLocation()
         {
             foreach(Quest quest in CurrentLocation.QuestsAvailableHere)
@@ -163,7 +166,7 @@ namespace Engine.ViewModels
 
                         CurrentPlayer.ExperiencePoints += quest.RewardExperiencePoints;
                         RaiseMessage($"+{quest.RewardExperiencePoints}经验点");
-                        CurrentPlayer.Assets += quest.RewardAssets;
+                        CurrentPlayer.ReceiveAssets(quest.RewardAssets);
                         RaiseMessage($"+{quest.RewardAssets}钱币");
 
                         foreach(ItemQuantity itemQuantity in quest.RewardItems)
@@ -204,12 +207,10 @@ namespace Engine.ViewModels
                 }
             }
         }
-
         private void GetMonsterAtLocation()
         {
             CurrentMonster = CurrentLocation.GetMonster();
         }
-
         public void AttackCurrentMonster()
         {
             if (CurrentWeapon == null)
@@ -219,32 +220,18 @@ namespace Engine.ViewModels
             }
 
             int damageToMonster = RandomNumberGenerator.NumberBetween(CurrentWeapon.MinimumDamage, CurrentWeapon.MaximumDamage);
-
             if (damageToMonster <= 0)
             {
                 RaiseMessage($"{CurrentMonster.Name}躲过攻击");
             }
             else
             {
-                CurrentMonster.CurrentHitPoints -= damageToMonster;
                 RaiseMessage($"对{CurrentMonster.Name}造成{damageToMonster}点伤害");
+                CurrentMonster.TakeDamage(damageToMonster);
             }
 
-            if (CurrentMonster.CurrentHitPoints <= 0)
+            if (CurrentMonster.IsDead)
             {
-                RaiseMessage("");
-                RaiseMessage($"击败 {CurrentMonster.Name}!");
-                CurrentPlayer.ExperiencePoints += CurrentMonster.RewardExperiencePoints;
-                RaiseMessage($"+{CurrentMonster.RewardExperiencePoints}经验点");
-                CurrentPlayer.Assets += CurrentMonster.Assets;
-                RaiseMessage($"+{CurrentMonster.Assets}钱币");
-
-                foreach (GameItem gameItem in CurrentMonster.Inventory)
-                {
-                    CurrentPlayer.AddItemToInventory(gameItem);
-                    RaiseMessage($"获得：{gameItem.Name}");
-                }
-                // 生成 Monster
                 GetMonsterAtLocation();
             }
             else
@@ -258,19 +245,32 @@ namespace Engine.ViewModels
                 }
                 else
                 {
-                    CurrentPlayer.CurrentHitPoints -= damageToPlayer;
                     RaiseMessage($"{CurrentMonster.Name} 对你造成 {damageToPlayer} 点伤害");
-                }
-                // Player 失败
-                if (CurrentPlayer.CurrentHitPoints <= 0)
-                {
-                    RaiseMessage("");
-                    RaiseMessage($"{CurrentMonster.Name} 击败了你");
-                    CurrentLocation = CurrentWorld.LocationAt(0, -1);
-                    CurrentPlayer.CurrentHitPoints = CurrentPlayer.Level * 10;
+                    CurrentPlayer.TakeDamage(damageToPlayer);
                 }
             }
 
+        }
+        private void OnCurrentPlayerKilled(object sender, System.EventArgs eventArgs)
+        {
+            RaiseMessage("");
+            RaiseMessage($"{CurrentMonster.Name} 击败了你");
+            CurrentLocation = CurrentWorld.LocationAt(0, -1);
+            CurrentPlayer.CompletelyHeal();
+        }
+        private void OnCurrentMonsterKilled(object sender, System.EventArgs eventArgs)
+        {
+            RaiseMessage("");
+            RaiseMessage($"击败 {CurrentMonster.Name}!");
+            CurrentPlayer.ExperiencePoints += CurrentMonster.RewardExperiencePoints;
+            RaiseMessage($"+{CurrentMonster.RewardExperiencePoints}经验点");
+            CurrentPlayer.ReceiveAssets(CurrentMonster.Assets);
+            RaiseMessage($"+{CurrentMonster.Assets}钱币");
+            foreach (GameItem gameItem in CurrentMonster.Inventory)
+            {
+                CurrentPlayer.AddItemToInventory(gameItem);
+                RaiseMessage($"获得：{gameItem.Name}");
+            }
         }
         private void RaiseMessage(string message)
         {

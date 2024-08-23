@@ -20,7 +20,7 @@ namespace WPFUI
                 ((FrameworkElement)sender).DataContext as GroupedInventoryItem;
             if(groupedInventoryItem != null)
             {
-                Session.CurrentPlayer.Assets += groupedInventoryItem.Item.Price;
+                Session.CurrentPlayer.ReceiveAssets(groupedInventoryItem.Item.Price);
                 Session.CurrentTrader.AddItemToInventory(groupedInventoryItem.Item);
                 Session.CurrentPlayer.RemoveItemFromInventory(groupedInventoryItem.Item);
             }
@@ -33,7 +33,7 @@ namespace WPFUI
             {
                 if(Session.CurrentPlayer.Assets >= groupedInventoryItem.Item.Price)
                 {
-                    Session.CurrentPlayer.Assets -= groupedInventoryItem.Item.Price;
+                    Session.CurrentPlayer.SpendAssets(groupedInventoryItem.Item.Price);
                     Session.CurrentTrader.RemoveItemFromInventory(groupedInventoryItem.Item);
                     Session.CurrentPlayer.AddItemToInventory(groupedInventoryItem.Item);
                 }
