@@ -214,7 +214,7 @@ namespace Engine.ViewModels
         {
             if (CurrentWeapon == null)
             {
-                RaiseMessage("需要选择武器以进行攻击");
+                RaiseMessage("需要使用武器进行攻击");
                 return;
             }
 

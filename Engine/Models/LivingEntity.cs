@@ -51,18 +51,45 @@ namespace Engine.Models
         public ObservableCollection<GameItem> Inventory { get; set; }
         public List<GameItem> Weapons =>
             Inventory.Where(i => i is Weapon).ToList();
+        public ObservableCollection<GroupedInventoryItem> GroupedInventories { get; set; }
         protected LivingEntity()
         {
             Inventory = new ObservableCollection<GameItem>();
+            GroupedInventories = new ObservableCollection<GroupedInventoryItem>();
         }
         public void AddItemToInventory(GameItem item)
         {
             Inventory.Add(item);
+            if(item.IsUnique)
+            {
+                GroupedInventories.Add(new GroupedInventoryItem(item, 1));
+            }
+            else
+            {
+                if(!GroupedInventories.Any(gi => gi.Item.ItemTypeID == item.ItemTypeID))
+                {
+                    GroupedInventories.Add(new GroupedInventoryItem(item, 0));
+                }
+                GroupedInventories.First(gi => gi.Item.ItemTypeID == item.ItemTypeID).Quantity++;
+            }
             OnPropertyChanged(nameof(Weapons));
         }
         public void RemoveItemFromInventory(GameItem item)
         {
             Inventory.Remove(item);
+            GroupedInventoryItem? groupedInventoryItemNeedToReduce =
+                GroupedInventories.FirstOrDefault(gi => gi.Item == item);
+            if(groupedInventoryItemNeedToReduce != null)
+            {
+                if(groupedInventoryItemNeedToReduce.Quantity == 1)
+                {
+                    GroupedInventories.Remove(groupedInventoryItemNeedToReduce);
+                }
+                else
+                {
+                    groupedInventoryItemNeedToReduce.Quantity--;
+                }
+            }
             OnPropertyChanged(nameof(Weapons));
         }
     }
