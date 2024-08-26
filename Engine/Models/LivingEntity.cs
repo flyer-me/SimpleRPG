@@ -118,8 +118,9 @@ namespace Engine.Models
         public void RemoveItemFromInventory(GameItem item)
         {
             Inventory.Remove(item);
-            GroupedInventoryItem? groupedInventoryItemNeedToReduce =
-                GroupedInventories.FirstOrDefault(gi => gi.Item == item);
+            GroupedInventoryItem? groupedInventoryItemNeedToReduce = item.IsUnique ?
+            GroupedInventories.FirstOrDefault(gi => gi.Item == item) :
+            GroupedInventories.FirstOrDefault(gi => gi.Item.ItemTypeID == item.ItemTypeID);
             if(groupedInventoryItemNeedToReduce != null)
             {
                 if(groupedInventoryItemNeedToReduce.Quantity == 1)
