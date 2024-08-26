@@ -40,7 +40,7 @@ namespace Engine.Models
                 OnPropertyChanged(nameof(Level));
             }
         }
-        public ObservableCollection<QuestStatus> Quests { get; set; }
+        public ObservableCollection<QuestStatus> Quests { get; }
         #endregion
         public Player(string name, string characterClass, int experiencePoints,
                       int maximumHitPoints, int currentHitPoints, int assets) :

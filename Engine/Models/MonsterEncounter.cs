@@ -9,7 +9,7 @@ namespace Engine.Models
     // 用于存储怪物生成概率
     public class MonsterEncounter
     {
-        public int MonsterID { get; set; }
+        public int MonsterID { get; }
         public int ChanceOfEncountering { get; set; }
 
         public MonsterEncounter(int monsterID, int chanceOfEncountering)
