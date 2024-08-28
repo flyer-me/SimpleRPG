@@ -28,11 +28,13 @@ namespace Engine.ViewModels
                 if(_currentPlayer != null)
                 {
                     _currentPlayer.OnKilled -= OnCurrentPlayerKilled;
+                    _currentPlayer.OnLeveledUp -= OnCurrentPlayerLevelUp;
                 }
                 _currentPlayer = value;
                 if(_currentPlayer != null)
                 {
                     _currentPlayer.OnKilled += OnCurrentPlayerKilled;
+                    _currentPlayer.OnLeveledUp += OnCurrentPlayerLevelUp;
                 }
                 OnPropertyChanged(nameof(CurrentPlayer));
             }
@@ -70,7 +72,7 @@ namespace Engine.ViewModels
                 {
                     _currentMonster.OnKilled += OnCurrentMonsterKilled;
                     RaiseMessage("");
-                    RaiseMessage($"{CurrentMonster.Name} 出现了!");
+                    RaiseMessage($"{CurrentMonster.Name} appeared.");
                 }
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(HasMonster));
@@ -152,7 +154,7 @@ namespace Engine.ViewModels
                 {
                     if(CurrentPlayer.HasAllTheseItems(quest.ItemsToComplete))
                     {
-                        // 去除物品以完成任务
+                        // Remove the quest completion items from inventory
                         foreach (ItemQuantity itemQuantity in quest.ItemsToComplete)
                         {
                             for(int i = 0; i < itemQuantity.Quantity; i++)
@@ -161,18 +163,17 @@ namespace Engine.ViewModels
                             }
                         }
                         RaiseMessage("");
-                        RaiseMessage($"'{quest.Name}'任务完成");
-
-                        CurrentPlayer.ExperiencePoints += quest.RewardExperiencePoints;
-                        RaiseMessage($"+{quest.RewardExperiencePoints}经验点");
+                        RaiseMessage($"You completed the '{quest.Name}' quest");
+                        RaiseMessage($"+{quest.RewardExperiencePoints}XP");
+                        CurrentPlayer.AddExperience(quest.RewardExperiencePoints);
+                         RaiseMessage($"+{quest.RewardAssets}Gold");
                         CurrentPlayer.ReceiveAssets(quest.RewardAssets);
-                        RaiseMessage($"+{quest.RewardAssets}钱币");
 
                         foreach(ItemQuantity itemQuantity in quest.RewardItems)
                         {
                             GameItem rewardItem = ItemFactory.CreateGameItem(itemQuantity.ItemID);
+                            RaiseMessage($"receive a {rewardItem.Name}");
                             CurrentPlayer.AddItemToInventory(rewardItem);
-                            RaiseMessage($"获得：{rewardItem.Name}");
                         }
 
                         questToComplete.IsCompleted = true;
@@ -189,7 +190,7 @@ namespace Engine.ViewModels
                 {
                     CurrentPlayer.Quests.Add(new QuestStatus(quest));
                     RaiseMessage("");
-                    RaiseMessage($"收到任务：'{quest.Name}'");
+                    RaiseMessage($"Quest:'{quest.Name}'");
                     RaiseMessage(quest.Description);
                     RaiseMessage("所需物品：");
                     foreach(ItemQuantity itemQuantity in quest.ItemsToComplete)
@@ -197,8 +198,8 @@ namespace Engine.ViewModels
                         RaiseMessage($"   {itemQuantity.Quantity} {ItemFactory.CreateGameItem(itemQuantity.ItemID).Name}");
                     }
                     RaiseMessage("奖励：");
-                    RaiseMessage($"   {quest.RewardExperiencePoints}经验点");
-                    RaiseMessage($"   {quest.RewardAssets}钱币");
+                    RaiseMessage($"   {quest.RewardExperiencePoints}XP");
+                    RaiseMessage($"   {quest.RewardAssets}Gold");
                     foreach(ItemQuantity itemQuantity in quest.RewardItems)
                     {
                         RaiseMessage($"   {itemQuantity.Quantity} {ItemFactory.CreateGameItem(itemQuantity.ItemID).Name}");
@@ -214,18 +215,18 @@ namespace Engine.ViewModels
         {
             if (CurrentWeapon == null)
             {
-                RaiseMessage("需要使用武器进行攻击");
+                RaiseMessage("You must select a weapon, to attack.");
                 return;
             }
 
             int damageToMonster = RandomNumberGenerator.NumberBetween(CurrentWeapon.MinimumDamage, CurrentWeapon.MaximumDamage);
             if (damageToMonster <= 0)
             {
-                RaiseMessage($"{CurrentMonster.Name}躲过攻击");
+                RaiseMessage($"{CurrentMonster.Name} escaped attack.");
             }
             else
             {
-                RaiseMessage($"对{CurrentMonster.Name}造成{damageToMonster}点伤害");
+                RaiseMessage($"Made {damageToMonster} damage to {CurrentMonster.Name}");
                 CurrentMonster.TakeDamage(damageToMonster);
             }
 
@@ -235,7 +236,7 @@ namespace Engine.ViewModels
             }
             else
             {
-                // Monster 攻击 Player
+                // Monster -- Player
                 int damageToPlayer = RandomNumberGenerator.NumberBetween(CurrentMonster.MinimumDamage, CurrentMonster.MaximumDamage);
 
                 if (damageToPlayer <= 0)
@@ -244,7 +245,7 @@ namespace Engine.ViewModels
                 }
                 else
                 {
-                    RaiseMessage($"{CurrentMonster.Name} 对你造成 {damageToPlayer} 点伤害");
+                    RaiseMessage($"{CurrentMonster.Name} made {damageToPlayer} damege to you");
                     CurrentPlayer.TakeDamage(damageToPlayer);
                 }
             }
@@ -253,23 +254,28 @@ namespace Engine.ViewModels
         private void OnCurrentPlayerKilled(object sender, System.EventArgs eventArgs)
         {
             RaiseMessage("");
-            RaiseMessage($"{CurrentMonster.Name} 击败了你");
+            RaiseMessage($"You have been killed");
             CurrentLocation = CurrentWorld.LocationAt(0, -1);
             CurrentPlayer.CompletelyHeal();
         }
         private void OnCurrentMonsterKilled(object sender, System.EventArgs eventArgs)
         {
             RaiseMessage("");
-            RaiseMessage($"击败 {CurrentMonster.Name}!");
-            CurrentPlayer.ExperiencePoints += CurrentMonster.RewardExperiencePoints;
-            RaiseMessage($"+{CurrentMonster.RewardExperiencePoints}经验点");
+            RaiseMessage($"Defeat {CurrentMonster.Name}!");
+            CurrentPlayer.AddExperience(CurrentMonster.RewardExperiencePoints);
+            RaiseMessage($"+{CurrentMonster.RewardExperiencePoints}XP");
             CurrentPlayer.ReceiveAssets(CurrentMonster.Assets);
-            RaiseMessage($"+{CurrentMonster.Assets}钱币");
+            RaiseMessage($"+{CurrentMonster.Assets}Gold");
             foreach (GameItem gameItem in CurrentMonster.Inventory)
             {
                 CurrentPlayer.AddItemToInventory(gameItem);
-                RaiseMessage($"获得：{gameItem.Name}");
+                RaiseMessage($"Receive：{gameItem.Name}");
             }
+        }
+        private void OnCurrentPlayerLevelUp(object sender, System.EventArgs eventArgs)
+        {
+            RaiseMessage("");
+            RaiseMessage($"Level up! You are now level {CurrentPlayer.Level}");
         }
         private void RaiseMessage(string message)
         {
