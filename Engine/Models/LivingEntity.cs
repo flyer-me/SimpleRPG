@@ -9,7 +9,7 @@ namespace Engine.Models
     public abstract class LivingEntity : BaseNotificationClass
     {
         #region Properties
-        private string _name;
+        private string _name = string.Empty;
         private int _currentHitPoints;
         private int _maximumHitPoints;
         private int _assets;
@@ -62,7 +62,7 @@ namespace Engine.Models
         public ObservableCollection<GameItem> Inventory { get; }
         public ObservableCollection<GroupedInventoryItem> GroupedInventories { get; }
         public List<GameItem> Weapons =>
-            Inventory.Where(i => i is Weapon).ToList();
+            Inventory.Where(i => i.Category == GameItem.ItemCategory.Weapon).ToList();
         public bool IsDead => CurrentHitPoints <= 0;
         #endregion
         public event EventHandler OnKilled;
