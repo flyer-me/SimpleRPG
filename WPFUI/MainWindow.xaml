@@ -208,7 +208,7 @@
                           ItemsSource="{Binding CurrentPlayer.Weapons}"
                           SelectedItem="{Binding CurrentPlayer.CurrentWeapon}"
                           DisplayMemberPath="Name"
-                          SelectedValuePath="ID"/> <!--ItemTypeID-->
+                          SelectedValuePath="ItemTypeID"/>
                 <Button Grid.Row="0" Grid.Column="2"
                         Content="使用"
                         Click="OnClick_AttackMonster"/>

@@ -21,7 +21,7 @@ namespace WPFUI
             if(groupedInventoryItem != null)
             {
                 Session.CurrentPlayer.ReceiveAssets(groupedInventoryItem.Item.Price);
-                Session.CurrentTrader.AddItemToInventory(groupedInventoryItem.Item);
+                Session.CurrentTrader!.AddItemToInventory(groupedInventoryItem.Item);
                 Session.CurrentPlayer.RemoveItemFromInventory(groupedInventoryItem.Item);
             }
         }
