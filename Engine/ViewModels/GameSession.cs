@@ -27,14 +27,16 @@ namespace Engine.ViewModels
             {
                 if(_currentPlayer != null)
                 {
-                    _currentPlayer.OnKilled -= OnCurrentPlayerKilled;
+                    _currentPlayer.OnActionPerformed -= OnCurrentPlayerPerformedAction;
                     _currentPlayer.OnLeveledUp -= OnCurrentPlayerLevelUp;
+                    _currentPlayer.OnKilled -= OnCurrentPlayerKilled;
                 }
                 _currentPlayer = value;
                 if(_currentPlayer != null)
                 {
-                    _currentPlayer.OnKilled += OnCurrentPlayerKilled;
+                    _currentPlayer.OnActionPerformed += OnCurrentPlayerPerformedAction;
                     _currentPlayer.OnLeveledUp += OnCurrentPlayerLevelUp;
+                    _currentPlayer.OnKilled += OnCurrentPlayerKilled;
                 }
                 OnPropertyChanged(nameof(CurrentPlayer));
             }
@@ -89,9 +91,6 @@ namespace Engine.ViewModels
                 OnPropertyChanged(nameof(HasTrader));
             }
         }
-
-        public GameItem CurrentWeapon { get; set; }
-
         public bool HasLocationToNorth =>
             CurrentWorld.LocationAt(CurrentLocation.XCoordinate, CurrentLocation.YCoordinate + 1) != null;
         public bool HasLocationToSouth =>
@@ -213,23 +212,12 @@ namespace Engine.ViewModels
         }
         public void AttackCurrentMonster()
         {
-            if (CurrentWeapon == null)
+            if (CurrentPlayer.CurrentWeapon == null)
             {
                 RaiseMessage("You must select a weapon, to attack.");
                 return;
             }
-
-            int damageToMonster = RandomNumberGenerator.NumberBetween(CurrentWeapon.MinimumDamage, CurrentWeapon.MaximumDamage);
-            if (damageToMonster <= 0)
-            {
-                RaiseMessage($"{CurrentMonster.Name} escaped attack.");
-            }
-            else
-            {
-                RaiseMessage($"Made {damageToMonster} damage to {CurrentMonster.Name}");
-                CurrentMonster.TakeDamage(damageToMonster);
-            }
-
+            CurrentPlayer.UseCurrentWeaponOn(CurrentMonster);
             if (CurrentMonster.IsDead)
             {
                 GetMonsterAtLocation();
@@ -241,7 +229,7 @@ namespace Engine.ViewModels
 
                 if (damageToPlayer <= 0)
                 {
-                    RaiseMessage("你躲过攻击");
+                    RaiseMessage("The {CurrentMonster.Name} attacks, but misses you.");
                 }
                 else
                 {
@@ -250,6 +238,10 @@ namespace Engine.ViewModels
                 }
             }
 
+        }
+        private void OnCurrentPlayerPerformedAction(object sender, string result)
+        {
+            RaiseMessage(result);
         }
         private void OnCurrentPlayerKilled(object sender, System.EventArgs eventArgs)
         {
