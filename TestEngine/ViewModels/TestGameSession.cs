@@ -29,6 +29,7 @@ namespace TestEngine.ViewModels
         public void TestPlayerMoveNorthSouthWestEast()
         {
             GameSession gameSession = new GameSession();
+             Assert.AreEqual(gameSession.CurrentWorld.LocationAt(0, 0), gameSession.CurrentLocation);
             gameSession.MoveNorth();
             Assert.AreEqual(gameSession.CurrentWorld.LocationAt(0, 1), gameSession.CurrentLocation);
             gameSession.MoveSouth();
