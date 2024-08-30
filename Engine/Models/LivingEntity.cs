@@ -198,6 +198,27 @@ namespace Engine.Models
             OnPropertyChanged(nameof(Consumables));
             OnPropertyChanged(nameof(HasConsumable));
         }
+        public void RemoveItemsFromInventory(List<ItemQuantity> itemQuantities)
+        {
+            foreach (ItemQuantity itemQuantity in itemQuantities)
+            {
+                for(int i = 0; i < itemQuantity.Quantity; i++)
+                {
+                    RemoveItemFromInventory(Inventory.First(item => item.ItemTypeID == itemQuantity.ItemID));
+                }
+            }
+        }
+        public bool HasAllTheseItems(List<ItemQuantity> itemQuantities)
+        {
+            foreach (ItemQuantity itemQuantity in itemQuantities)
+            {
+                if (Inventory.Count(item => item.ItemTypeID == itemQuantity.ItemID) < itemQuantity.Quantity)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
         #region private methods
         private void RaiseOnKilledEvent()
         {

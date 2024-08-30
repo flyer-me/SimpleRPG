@@ -26,7 +26,7 @@ namespace TestEngine.ViewModels
             Assert.AreEqual(gameSession.CurrentPlayer.Level * 10, gameSession.CurrentPlayer.CurrentHitPoints);
         }
         [TestMethod]
-        public void TestPlayerMoveNorthSouthWestEast()
+        public void TestPlayerMoveAndLocationChanged()
         {
             GameSession gameSession = new GameSession();
              Assert.AreEqual(gameSession.CurrentWorld.LocationAt(0, 0), gameSession.CurrentLocation);
