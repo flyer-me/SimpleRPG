@@ -25,7 +25,10 @@ namespace Engine.Models
             Description = description;
             ImageName = imageName;
         }
-        public void UpdateMonsterEncounter(int monsterID, int chanceOfEncountering)
+        /// <summary>
+        /// 在Location添加Monster生成概率，如已有则更新概率
+        /// </summary>
+        public void AddMonsterEncounter(int monsterID, int chanceOfEncountering)
         {
             if (MonstersHere.Exists(m => m.MonsterID == monsterID))
             {

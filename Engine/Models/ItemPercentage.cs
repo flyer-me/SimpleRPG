@@ -1,18 +1,18 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Engine.Models
 {
-    public class Trader : LivingEntity
+    public class ItemPercentage
     {
         public int ID { get; }
-        public Trader(int id, string name): base(name, 999, 999, 999)
+        public int Percentage { get; }
+        public ItemPercentage(int id, int percentage)
         {
             ID = id;
+            Percentage = percentage;
         }
     }
 }
