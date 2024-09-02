@@ -62,6 +62,7 @@ namespace Engine.Factories
                 {
                     gameItem.Action = new Heal(gameItem, node.AttributeAsInt("HitPointsToHeal"));
                 }
+                _standardGameItems.Add(gameItem);
             }
         }
         private static GameItem.ItemCategory DetermineItemCategory(string itemType)

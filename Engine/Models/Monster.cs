@@ -15,10 +15,10 @@ namespace Engine.Models
         public string ImageName { get; }
         public int RewardExperiencePoints { get; }
         public Monster(int id, string name, string imageName,
-                        int maximumHitPoints, int currentHitPoints,
+                        int maximumHitPoints,
                         GameItem currentWeapon,
                         int rewardExperiencePoints, int rewardAssets):
-            base(name, maximumHitPoints, currentHitPoints, rewardAssets)
+            base(name, maximumHitPoints, maximumHitPoints, rewardAssets)
         {
             ID = id;
             ImageName = imageName;
@@ -33,7 +33,7 @@ namespace Engine.Models
         public Monster GetNewInstance()
         {
             Monster newMonster =
-                    new Monster(ID, Name, ImageName, MaximumHitPoints, CurrentHitPoints, CurrentWeapon,
+                    new Monster(ID, Name, ImageName, MaximumHitPoints, CurrentWeapon,
                             RewardExperiencePoints, Assets);
             foreach (ItemPercentage itemPercentage in _lootTable)
             {
