@@ -11,13 +11,21 @@ namespace Engine.Models
         public int Id { get; }
         public string Name { get; }
         public string Description { get; }
-
         public List<ItemQuantity> ItemsToComplete { get; }
-
         public int RewardExperiencePoints { get; }
         public int RewardAssets { get; }
         public List<ItemQuantity> RewardItems { get; }
-
+        public string ToolTipContents =>
+            Description + Environment.NewLine + Environment.NewLine +
+            "Items to complete the quest" + Environment.NewLine +
+            "===========================" + Environment.NewLine +
+            string.Join(Environment.NewLine, ItemsToComplete.Select(i => i.QuantityItemDescription)) +
+            Environment.NewLine + Environment.NewLine +
+            "Rewards\r\n" +
+            "===========================" + Environment.NewLine +
+            $"{RewardExperiencePoints} experience points" + Environment.NewLine +
+            $"{RewardAssets} gold pieces" + Environment.NewLine +
+            string.Join(Environment.NewLine, RewardItems.Select(i => i.QuantityItemDescription));
         public Quest(int id, string name, string description, List<ItemQuantity> itemsToComplete, int rewardExperiencePoints, int rewardAssets, List<ItemQuantity> rewardItems)
         {
             Id = id;

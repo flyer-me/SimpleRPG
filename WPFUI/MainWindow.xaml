@@ -10,7 +10,7 @@
         FontSize="11pt"
         Title="PRG" Height="768" Width="1024"
         KeyDown="MainWindow_OnKeyDown">
-    <!-- FileNotFoundException: Could not find file ‘IDE\ImageName’, change d:DataContext=”{d:DesignInstance viewModels:GameSession}” to d:DataContext=”{Binding GameSession}”, that should fix it. -->
+    <!-- FileNotFoundException: Could not find file ‘IDE\ImageName’, change d:DataContext=”{d:DesignInstance viewModels:GameSession}” to d:DataContext=”{Binding GameSession}”. -->
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibility"/>
     </Window.Resources>
@@ -25,9 +25,9 @@
             <ColumnDefinition Width="250"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <!-- 主菜单 -->
+        <!-- MainWindow -->
         <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Content="主菜单" Background="AliceBlue"/>
-        <!-- 角色状态 -->
+        <!-- Player Status -->
         <Grid Grid.Row="1" Grid.Column="0" Background="Aquamarine">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -171,7 +171,14 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Name"
                                                 Binding="{Binding PlayerQuest.Name, Mode=OneWay}"
-                                                Width="*"/>
+                                                Width="*">
+                                <DataGridTextColumn.CellStyle>
+                                    <Style TargetType="DataGridCell">
+                                        <Setter Property="ToolTip"
+                                                Value="{Binding PlayerQuest.ToolTipContents}"/>
+                                    </Style>
+                                </DataGridTextColumn.CellStyle>
+                            </DataGridTextColumn>
                             <DataGridTextColumn Header="IsCompleted"
                                                 Binding="{Binding IsCompleted, Mode=OneWay}"
                                                 Width="Auto"/>
@@ -185,7 +192,14 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Name"
                                                 Binding="{Binding Name, Mode=OneWay}"
-                                                Width="*"/>
+                                                Width="*">
+                                <DataGridTextColumn.CellStyle>
+                                    <Style TargetType="DataGridCell">
+                                        <Setter Property="ToolTip"
+                                                Value="{Binding ToolTipContents}"/>
+                                    </Style>
+                                </DataGridTextColumn.CellStyle>
+                            </DataGridTextColumn>
                             <DataGridTemplateColumn MinWidth="75">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
