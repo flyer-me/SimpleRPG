@@ -18,13 +18,13 @@ namespace WPFUI.CustomConverters
             {
                 return null;
             }
-            if (!_locations.TryGetValue(filename, out BitmapImage? bitmapImage))
+            if (!_locations.ContainsKey(filename))
             {
-                value = new BitmapImage(new Uri($"{AppDomain.CurrentDomain.BaseDirectory}{filename}",
+                BitmapImage bitmapImage = new BitmapImage(new Uri($"{AppDomain.CurrentDomain.BaseDirectory}{filename}",
                                                        UriKind.Absolute));
-                _locations.Add(filename, bitmapImage!);
+                _locations.Add(filename, bitmapImage);
             }
-            return value;
+            return _locations[filename];
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
