@@ -36,7 +36,7 @@
 
         <DataGrid Grid.Row="2" Grid.Column="0"
                   Margin="10"
-                  ItemsSource="{Binding CurrentPlayer.GroupedInventories}"
+                  ItemsSource="{Binding CurrentPlayer.Inventory.GroupedInventory}"
                   AutoGenerateColumns="False"
                   HeadersVisibility="Column"
                   CanUserAddRows="False"
@@ -68,22 +68,22 @@
         </DataGrid>
         <DataGrid Grid.Row="2" Grid.Column="1"
                   Margin="10"
-                  ItemsSource="{Binding CurrentTrader.GroupedInventories}"
+                  ItemsSource="{Binding CurrentTrader.Inventory.GroupedInventory}"
                   AutoGenerateColumns="False"
                   HeadersVisibility="Column"
                   CanUserAddRows="False"
                   CanUserDeleteRows="False"
                   VerticalScrollBarVisibility="Auto">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="物品描述"
+                <DataGridTextColumn Header="Description"
                                     IsReadOnly="True"
                                     Width="*"
                                     Binding="{Binding Path=Item.Name}"/>
-                <DataGridTextColumn Header="数量"
+                <DataGridTextColumn Header="Quantity"
                                     IsReadOnly="True"
                                     Width="Auto"
                                     Binding="{Binding Quantity}"/>
-                <DataGridTextColumn Header="价格"
+                <DataGridTextColumn Header="Price"
                                     IsReadOnly="True"
                                     Width="Auto"
                                     Binding="{Binding Path=Item.Price}"/>
