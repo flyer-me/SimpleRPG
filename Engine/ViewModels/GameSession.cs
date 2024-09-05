@@ -10,7 +10,6 @@ namespace Engine.ViewModels
     public class GameSession : BaseNotificationClass
     {
         private readonly MessageBroker _messageBroker = MessageBroker.GetInstance();
-        public event EventHandler<GameMessageEventArgs> OnMessageRaised;
         #region Properties
         private Player _currentPlayer;
         private Location _currentLocation;
