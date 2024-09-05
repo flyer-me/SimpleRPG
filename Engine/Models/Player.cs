@@ -36,8 +36,8 @@ namespace Engine.Models
         #endregion
         public event EventHandler OnLeveledUp;
         public Player(string name, string characterClass, int experiencePoints,
-                      int maximumHitPoints, int currentHitPoints, int assets) :
-                base(name, maximumHitPoints, currentHitPoints, assets)
+                      int maximumHitPoints, int currentHitPoints, int dexterity, int assets) :
+                base(name, maximumHitPoints, currentHitPoints, dexterity, assets)
         {
             CharacterClass = characterClass;
             ExperiencePoints = experiencePoints;

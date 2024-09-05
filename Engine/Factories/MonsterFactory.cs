@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml;
@@ -39,10 +39,11 @@ namespace Engine.Factories
                                 node.AttributeAsString("Name"),
                                 $".{rootImagePath}{node.AttributeAsString("ImageName")}",
                                 node.AttributeAsInt("MaximumHitPoints"),
+                                Convert.ToInt32(node.SelectSingleNode("./Dexterity")?.InnerText ?? "0"),
                                 ItemFactory.CreateGameItem(node.AttributeAsInt("WeaponID")),
                                 node.AttributeAsInt("RewardXP"),
-                                node.AttributeAsInt("Assets"));
-                XmlNodeList lootItemNodes = node.SelectNodes("./LootItems/LootItem");
+                                node.AttributeAsInt("Gold"));
+                XmlNodeList? lootItemNodes = node.SelectNodes("./LootItems/LootItem");
                 if (lootItemNodes != null)
                 {
                     foreach (XmlNode lootItemNode in lootItemNodes)

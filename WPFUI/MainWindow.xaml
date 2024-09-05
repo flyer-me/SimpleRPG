@@ -27,9 +27,10 @@
         </Grid.ColumnDefinitions>
         <!-- MainWindow -->
         <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Content="主菜单" Background="AliceBlue"/>
-        <!-- Player Status -->
+        <!-- Player’s Stats -->
         <Grid Grid.Row="1" Grid.Column="0" Background="Aquamarine">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -48,14 +49,16 @@
             <Label Grid.Row="0" Grid.Column="1" Content="{Binding CurrentPlayer.Name}"/>
             <Label Grid.Row="1" Grid.Column="0" Content="Character"/>
             <Label Grid.Row="1" Grid.Column="1" Content="{Binding CurrentPlayer.CharacterClass}"/>
-            <Label Grid.Row="2" Grid.Column="0" Content="HitPoints"/>
-            <Label Grid.Row="2" Grid.Column="1" Content="{Binding CurrentPlayer.CurrentHitPoints}"/>
-            <Label Grid.Row="3" Grid.Column="0" Content="Assets"/>
-            <Label Grid.Row="3" Grid.Column="1" Content="{Binding CurrentPlayer.Assets}"/>
-            <Label Grid.Row="4" Grid.Column="0" Content="ExperiencePoints"/>
-            <Label Grid.Row="4" Grid.Column="1" Content="{Binding CurrentPlayer.ExperiencePoints}"/>
-            <Label Grid.Row="5" Grid.Column="0" Content="Level"/>
-            <Label Grid.Row="5" Grid.Column="1" Content="{Binding CurrentPlayer.Level}"/>
+            <Label Grid.Row="2" Grid.Column="0" Content="Dexterity:"/>
+            <Label Grid.Row="2" Grid.Column="1" Content="{Binding CurrentPlayer.Dexterity}"/>
+            <Label Grid.Row="3" Grid.Column="0" Content="HitPoints"/>
+            <Label Grid.Row="3" Grid.Column="1" Content="{Binding CurrentPlayer.CurrentHitPoints}"/>
+            <Label Grid.Row="4" Grid.Column="0" Content="Assets"/>
+            <Label Grid.Row="4" Grid.Column="1" Content="{Binding CurrentPlayer.Assets}"/>
+            <Label Grid.Row="5" Grid.Column="0" Content="ExperiencePoints"/>
+            <Label Grid.Row="5" Grid.Column="1" Content="{Binding CurrentPlayer.ExperiencePoints}"/>
+            <Label Grid.Row="6" Grid.Column="0" Content="Level"/>
+            <Label Grid.Row="6" Grid.Column="1" Content="{Binding CurrentPlayer.Level}"/>
         </Grid>
         <!-- main session -->
         <Grid Grid.Row="1" Grid.Column="1"
