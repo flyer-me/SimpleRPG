@@ -10,7 +10,7 @@ namespace Engine.ViewModels
     public class GameSession : BaseNotificationClass
     {
         private readonly MessageBroker _messageBroker = MessageBroker.GetInstance();
-        private Battle _currentBattle;
+        private Battle? _currentBattle;
         #region Properties
         private Player _currentPlayer;
         private Location _currentLocation;
@@ -24,13 +24,13 @@ namespace Engine.ViewModels
             get { return _currentPlayer; }
             set
             {
-                if(_currentPlayer != null)
+                if (_currentPlayer != null)
                 {
                     _currentPlayer.OnLeveledUp -= OnCurrentPlayerLevelUp;
                     _currentPlayer.OnKilled -= OnPlayerKilled;
                 }
                 _currentPlayer = value;
-                if(_currentPlayer != null)
+                if (_currentPlayer != null)
                 {
                     _currentPlayer.OnLeveledUp += OnCurrentPlayerLevelUp;
                     _currentPlayer.OnKilled += OnPlayerKilled;
@@ -57,20 +57,21 @@ namespace Engine.ViewModels
             }
         }
         [JsonIgnore]
-        public Monster CurrentMonster
+        public Monster? CurrentMonster
         {
             get { return _currentMonster; }
             set
             {
-                if(_currentBattle != null)
+                if (_currentBattle != null)
                 {
                     _currentBattle.OnCombatVictory -= OnCurrentMonsterKilled;
                     _currentBattle.Dispose();
+                    _currentBattle = null;
                 }
                 _currentMonster = value;
-                if(_currentMonster != null)
+                if (_currentMonster != null)
                 {
-                    _currentBattle = new Battle(CurrentPlayer, CurrentMonster);
+                    _currentBattle = new Battle(CurrentPlayer, CurrentMonster!);
                     _currentBattle.OnCombatVictory += OnCurrentMonsterKilled;
                 }
                 OnPropertyChanged();
@@ -157,14 +158,14 @@ namespace Engine.ViewModels
         }
         private void CompleteQuestsAtLocation()
         {
-            foreach(Quest quest in CurrentLocation.QuestsAvailableHere)
+            foreach (Quest quest in CurrentLocation.QuestsAvailableHere)
             {
                 QuestStatus? questToComplete =
                     CurrentPlayer.Quests.FirstOrDefault(q => q.PlayerQuest.ID == quest.ID &&
                                                              !q.IsCompleted);
-                if(questToComplete != null)
+                if (questToComplete != null)
                 {
-                    if(CurrentPlayer.Inventory.HasAllTheseItems(quest.ItemsToComplete))
+                    if (CurrentPlayer.Inventory.HasAllTheseItems(quest.ItemsToComplete))
                     {
                         CurrentPlayer.RemoveItemsFromInventory(quest.ItemsToComplete);
                         _messageBroker.RaiseMessage("");
@@ -174,7 +175,7 @@ namespace Engine.ViewModels
                         _messageBroker.RaiseMessage($"+{quest.RewardAssets}Gold");
                         CurrentPlayer.ReceiveAssets(quest.RewardAssets);
 
-                        foreach(ItemQuantity itemQuantity in quest.RewardItems)
+                        foreach (ItemQuantity itemQuantity in quest.RewardItems)
                         {
                             GameItem rewardItem = ItemFactory.CreateGameItem(itemQuantity.ItemID);
                             _messageBroker.RaiseMessage($"receive a {rewardItem.Name}");
@@ -186,7 +187,6 @@ namespace Engine.ViewModels
                 }
             }
         }
-
         private void GivePlayerQuestAtLocation()
         {
             foreach (Quest quest in CurrentLocation.QuestsAvailableHere)
@@ -198,14 +198,14 @@ namespace Engine.ViewModels
                     _messageBroker.RaiseMessage($"Quest:'{quest.Name}'");
                     _messageBroker.RaiseMessage(quest.Description);
                     _messageBroker.RaiseMessage("Return with:");
-                    foreach(ItemQuantity itemQuantity in quest.ItemsToComplete)
+                    foreach (ItemQuantity itemQuantity in quest.ItemsToComplete)
                     {
                         _messageBroker.RaiseMessage($"   {itemQuantity.Quantity} {ItemFactory.CreateGameItem(itemQuantity.ItemID).Name}");
                     }
                     _messageBroker.RaiseMessage("And you will receive:");
                     _messageBroker.RaiseMessage($"   {quest.RewardExperiencePoints}XP");
                     _messageBroker.RaiseMessage($"   {quest.RewardAssets}Gold");
-                    foreach(ItemQuantity itemQuantity in quest.RewardItems)
+                    foreach (ItemQuantity itemQuantity in quest.RewardItems)
                     {
                         _messageBroker.RaiseMessage($"   {itemQuantity.Quantity} {ItemFactory.CreateGameItem(itemQuantity.ItemID).Name}");
                     }
@@ -214,14 +214,26 @@ namespace Engine.ViewModels
         }
         public void AttackCurrentMonster()
         {
-            _currentBattle.AttackOpponent();
+            _currentBattle?.AttackOpponent();
         }
         public void UseCurrentConsumable()
         {
-             if(CurrentPlayer.CurrentConsumable != null)
+            if (CurrentPlayer.CurrentConsumable != null)
             {
+                if (_currentBattle == null)
+                {
+                    CurrentPlayer.OnActionPerformed += OnConsumableActionPerformed;
+                }
                 CurrentPlayer.UseCurrentConsumable();
+                if (_currentBattle == null)
+                {
+                    CurrentPlayer.OnActionPerformed -= OnConsumableActionPerformed;
+                }
             }
+        }
+        private void OnConsumableActionPerformed(object sender, string result)
+        {
+            _messageBroker.RaiseMessage(result);
         }
         public void CraftItemUsing(Recipe recipe)
         {
@@ -250,6 +262,13 @@ namespace Engine.ViewModels
         }
         private void OnPlayerKilled(object sender, System.EventArgs eventArgs)
         {
+            // 确保此次移动后清除battle
+            if (_currentBattle != null)
+            {
+                _currentBattle.OnCombatVictory -= OnCurrentMonsterKilled;
+                _currentBattle.Dispose();
+                _currentBattle = null;
+            }
             _messageBroker.RaiseMessage("");
             _messageBroker.RaiseMessage($"You have been killed");
             CurrentLocation = CurrentWorld.LocationAt(0, -1);
