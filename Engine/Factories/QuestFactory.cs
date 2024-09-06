@@ -36,12 +36,12 @@ namespace Engine.Factories
             {
                 List<ItemQuantity> itemsToComplete = new List<ItemQuantity>();
                 List<ItemQuantity> rewardItems = new List<ItemQuantity>();
-                foreach(XmlNode childNode in node.SelectNodes("./ItemsToComplete/Item"))
+                foreach(XmlNode childNode in node.SelectNodes("./ItemsToComplete/Item")!)
                 {
                     itemsToComplete.Add(new ItemQuantity(childNode.AttributeAsInt("ID"),
                                                          childNode.AttributeAsInt("Quantity")));
                 }
-                foreach(XmlNode childNode in node.SelectNodes("./RewardItems/Item"))
+                foreach(XmlNode childNode in node.SelectNodes("./RewardItems/Item")!)
                 {
                     rewardItems.Add(new ItemQuantity(childNode.AttributeAsInt("ID"),
                                                      childNode.AttributeAsInt("Quantity")));
@@ -55,9 +55,9 @@ namespace Engine.Factories
                                       rewardItems));
             }
         }
-        internal static Quest GetQuestByID(int id)
+        internal static Quest? GetQuestByID(int id)
         {
-            return _quests.FirstOrDefault(quest => quest.Id == id);
+            return _quests.FirstOrDefault(quest => quest.ID == id);
         }
     }
 }

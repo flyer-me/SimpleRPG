@@ -1,9 +1,8 @@
 ﻿using Engine.Factories;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Engine.Models
 {
@@ -11,11 +10,17 @@ namespace Engine.Models
     {
         public int XCoordinate { get; }
         public int YCoordinate { get; }
+        [JsonIgnore]
         public string Name { get; }
+        [JsonIgnore]
         public string Description { get; }
+        [JsonIgnore]
         public string ImageName { get; }
+        [JsonIgnore]
         public List<Quest> QuestsAvailableHere { get; } = new List<Quest>();
+        [JsonIgnore]
         public List<MonsterEncounter> MonstersHere { get; } = new List<MonsterEncounter>();
+        [JsonIgnore]
         public Trader? TraderHere { get; set; }
         public Location(int xCoordinate, int yCoordinate, string name, string description, string imageName)
         {
@@ -46,7 +51,7 @@ namespace Engine.Models
         /// <summary>
         /// 由本Location的所有Monster生成概率，随机生成一个Monster
         /// </summary>
-        public Monster GetMonster()
+        public Monster? GetMonster()
         {
             if (!MonstersHere.Any())
             {
@@ -56,7 +61,7 @@ namespace Engine.Models
             int totalChances = MonstersHere.Sum(m => m.ChanceOfEncountering);
             int randomNumber = RandomNumberGenerator.NumberBetween(1, totalChances);
 
-            // 累加生成概率，直到它大于随机数的值，生成当前对应怪物
+            // 累加生成概率，直到它大于随机数的值
             int nowTotal = 0;
             foreach (MonsterEncounter monsterEncounter in MonstersHere)
             {

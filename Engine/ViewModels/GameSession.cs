@@ -2,8 +2,8 @@
 using System.Linq;
 using Engine.Models;
 using Engine.Factories;
-using Engine.EventArgs;
 using Engine.Services;
+using Newtonsoft.Json;
 
 namespace Engine.ViewModels
 {
@@ -14,8 +14,10 @@ namespace Engine.ViewModels
         #region Properties
         private Player _currentPlayer;
         private Location _currentLocation;
-        private Monster _currentMonster;
+        private Monster? _currentMonster;
         private Trader? _currentTrader;
+        public string Version { get; } = "0.1.000";
+        [JsonIgnore]
         public World CurrentWorld { get; }
         public Player CurrentPlayer
         {
@@ -54,6 +56,7 @@ namespace Engine.ViewModels
                 CurrentTrader = CurrentLocation.TraderHere;
             }
         }
+        [JsonIgnore]
         public Monster CurrentMonster
         {
             get { return _currentMonster; }
@@ -74,6 +77,7 @@ namespace Engine.ViewModels
                 OnPropertyChanged(nameof(HasMonster));
             }
         }
+        [JsonIgnore]
         public Trader? CurrentTrader
         {
             get { return _currentTrader; }
@@ -84,19 +88,26 @@ namespace Engine.ViewModels
                 OnPropertyChanged(nameof(HasTrader));
             }
         }
+        [JsonIgnore]
         public bool HasLocationToNorth =>
             CurrentWorld.LocationAt(CurrentLocation.XCoordinate, CurrentLocation.YCoordinate + 1) != null;
+        [JsonIgnore]
         public bool HasLocationToSouth =>
             CurrentWorld.LocationAt(CurrentLocation.XCoordinate, CurrentLocation.YCoordinate - 1) != null;
+        [JsonIgnore]
         public bool HasLocationToEast =>
             CurrentWorld.LocationAt(CurrentLocation.XCoordinate + 1, CurrentLocation.YCoordinate) != null;
+        [JsonIgnore]
         public bool HasLocationToWest =>
             CurrentWorld.LocationAt(CurrentLocation.XCoordinate - 1, CurrentLocation.YCoordinate) != null;
+        [JsonIgnore]
         public bool HasMonster => CurrentMonster != null;
+        [JsonIgnore]
         public bool HasTrader => CurrentTrader != null;
         #endregion
         public GameSession()
         {
+            CurrentWorld = WorldFactory.CreateWorld();
             int dexterity = RandomNumberGenerator.NumberBetween(3, 18);
             CurrentPlayer = new Player("admin", "Fighter", 0, 10, 10, dexterity, 1000);
             if (!CurrentPlayer.Inventory.Weapons.Any())
@@ -108,10 +119,14 @@ namespace Engine.ViewModels
             CurrentPlayer.AddItemToInventory(ItemFactory.CreateGameItem(3001));
             CurrentPlayer.AddItemToInventory(ItemFactory.CreateGameItem(3002));
             CurrentPlayer.AddItemToInventory(ItemFactory.CreateGameItem(3003));
-            CurrentWorld = WorldFactory.CreateWorld();
             CurrentLocation = CurrentWorld.LocationAt(0, 0);
         }
-
+        public GameSession(Player player, int xCoordinate, int yCoordinate)
+        {
+            CurrentWorld = WorldFactory.CreateWorld();
+            CurrentPlayer = player;
+            CurrentLocation = CurrentWorld.LocationAt(xCoordinate, yCoordinate);
+        }
         public void MoveNorth()
         {
             if (HasLocationToNorth)
@@ -145,7 +160,7 @@ namespace Engine.ViewModels
             foreach(Quest quest in CurrentLocation.QuestsAvailableHere)
             {
                 QuestStatus? questToComplete =
-                    CurrentPlayer.Quests.FirstOrDefault(q => q.PlayerQuest.Id == quest.Id &&
+                    CurrentPlayer.Quests.FirstOrDefault(q => q.PlayerQuest.ID == quest.ID &&
                                                              !q.IsCompleted);
                 if(questToComplete != null)
                 {
@@ -176,7 +191,7 @@ namespace Engine.ViewModels
         {
             foreach (Quest quest in CurrentLocation.QuestsAvailableHere)
             {
-                if (!CurrentPlayer.Quests.Any(q => q.PlayerQuest.Id == quest.Id))
+                if (!CurrentPlayer.Quests.Any(q => q.PlayerQuest.ID == quest.ID))
                 {
                     CurrentPlayer.Quests.Add(new QuestStatus(quest));
                     _messageBroker.RaiseMessage("");

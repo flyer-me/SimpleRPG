@@ -8,6 +8,7 @@ using Engine.EventArgs;
 using Engine.Models;
 using Engine.Services;
 using Engine.ViewModels;
+using System.ComponentModel;
 
 namespace WPFUI
 {
@@ -17,7 +18,7 @@ namespace WPFUI
     public partial class MainWindow : Window
     {
         private readonly MessageBroker _messageBroker = MessageBroker.GetInstance();
-        private readonly GameSession _gameSession = new GameSession();
+        private readonly GameSession _gameSession;
         private readonly Dictionary<Key, Action> _userInputActions =
             new Dictionary<Key, Action>();
         public MainWindow()
@@ -25,6 +26,7 @@ namespace WPFUI
             InitializeComponent();
             InitializeUserInputActions();
             _messageBroker.OnMessageRaised += OnGameMessageRaised;
+            _gameSession = SaveService.LoadSaveOrCreate();
             DataContext = _gameSession;
         }
 
@@ -107,6 +109,10 @@ namespace WPFUI
                     }
                 }
             }
+        }
+        private void MainWindow_OnClosing(object sender, CancelEventArgs e)
+        {
+            SaveService.Save(_gameSession);
         }
     }
 }
