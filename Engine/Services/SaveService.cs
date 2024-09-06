@@ -12,21 +12,21 @@ namespace Engine.Services
 {
     public class SaveService
     {
-        private const string SAVE_FILE_NAME = "save.json";
-        public static void Save(GameSession gameSession)
+        public static void Save(GameSession gameSession ,string fileName)
         {
             var json = JsonConvert.SerializeObject(gameSession, Formatting.Indented);
-            File.WriteAllText(SAVE_FILE_NAME, json);
+            File.WriteAllText(fileName, json);
         }
-        public static GameSession LoadSaveOrCreate()
+        public static GameSession LoadSaveOrCreate(string fileName)
         {
-            if (!File.Exists(SAVE_FILE_NAME))
+            if (!File.Exists(fileName))
             {
                 return new GameSession();
             }
             try
             {
-                JObject data = JObject.Parse(File.ReadAllText(SAVE_FILE_NAME));
+                System.Console.WriteLine("File exist");
+                JObject data = JObject.Parse(File.ReadAllText(fileName));
                 Player player = CreatePlayer(data);
                 int x = (int)data[nameof(GameSession.CurrentLocation)][nameof(Location.XCoordinate)];
                 int y = (int)data[nameof(GameSession.CurrentLocation)][nameof(Location.YCoordinate)];

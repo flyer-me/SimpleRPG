@@ -27,7 +27,30 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <!-- MainWindow -->
-        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Content="主菜单" Background="AliceBlue"/>
+        <Menu Grid.Row="0" Grid.Column="0"
+              Grid.ColumnSpan="2"
+              FontSize="11pt"
+              Background="AliceBlue">
+            <MenuItem Header="File">
+                <MenuItem Header="Start New Game"
+                          Click="StartNewGame_OnClick"/>
+                <Separator/>
+                <MenuItem Header="Load"
+                          Click="LoadGame_OnClick"/>
+                <MenuItem Header="Save"
+                          Click="SaveGame_OnClick"/>
+                <Separator/>
+                <MenuItem Header="Exit"
+                          Click="Exit_OnClick"/>
+            </MenuItem>
+            <MenuItem Header="Help">
+                <MenuItem Header="Help"
+                          IsEnabled="False"/>
+                <Separator/>
+                <MenuItem Header="About"
+                          IsEnabled="False"/>
+            </MenuItem>
+        </Menu>
         <!-- Player’s Stats -->
         <Grid Grid.Row="1" Grid.Column="0" Background="Aquamarine">
             <Grid.RowDefinitions>
