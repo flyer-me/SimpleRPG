@@ -1,6 +1,12 @@
-MIT License
+#Included Package Licenses:
+As part of the SIMPLERPG project, it use a few NuGet packages from external developers.
+As part of their license agreements, we will list those components here with their license.
 
-Copyright (c) [year] [fullname]
+##Newtonsoft.Json:
+------------------
+The MIT License (MIT)
+
+Copyright (c) 2007 James Newton-King
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
