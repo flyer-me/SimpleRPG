@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -29,6 +29,10 @@ namespace WPFUI
             InitializeComponent();
             InitializeUserInputActions();
             SetActiveGameSessionTo(new GameSession());
+        }
+        public MainWindow(Player player) : this()
+        {
+            _gameSession.CurrentPlayer = player;
         }
         private void Button_Click_MoveNorth(object sender, RoutedEventArgs e)
         {

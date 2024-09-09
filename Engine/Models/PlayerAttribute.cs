@@ -1,14 +1,22 @@
 using Engine.Services;
 namespace Engine.Models
 {
-    public class PlayerAttribute
+    public class PlayerAttribute : BaseNotificationClass
     {
+        private int _modifiedValue;
         public string Key { get; }
         public string DisplayName { get; }
         public string ValueRange { get; }
         public int BaseValue { get; set; }
-        public int ModifiedValue { get; set; }
-        // Constructor that will use DiceService to create a BaseValue.
+        public int ModifiedValue
+        {
+            get => _modifiedValue;
+            set
+            {
+                _modifiedValue = value;
+                OnPropertyChanged(nameof(ModifiedValue));
+            }
+        }
         // The constructor this calls will put that same value into BaseValue and ModifiedValue
         public PlayerAttribute(string key, string displayName, string valueRange)
             : this(key, displayName, valueRange, RandomGenerate.NumberBetween(int.Parse(valueRange.Split('-')[0]), int.Parse(valueRange.Split('-')[1])))
