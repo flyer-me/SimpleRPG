@@ -40,7 +40,7 @@ namespace Engine.Models
                 // Clone the loot table - even though we probably won't need it
                 newMonster.AddItemToLootTable(itemPercentage.ID, itemPercentage.Percentage);
 
-                if(RandomNumberGenerator.NumberBetween(1, 100) <= itemPercentage.Percentage)
+                if(RandomGenerate.NumberBetween(1, 100) <= itemPercentage.Percentage)
                 {
                     newMonster.AddItemToInventory(ItemFactory.CreateGameItem(itemPercentage.ID));
                 }

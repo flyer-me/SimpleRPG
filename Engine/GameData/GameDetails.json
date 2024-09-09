@@ -1,0 +1,76 @@
+{
+    "Title": "SIMPLERPG",
+    "Version": "0.1.000",
+    "PlayerAttributes": [
+      {
+        "Key": "STR",
+        "DisplayName": "Strength",
+        "ValueRange": "3-18"
+      },
+      {
+        "Key": "INT",
+        "DisplayName": "Intelligence",
+        "ValueRange": "3-18"
+      },
+      {
+        "Key": "WIS",
+        "DisplayName": "Wisdom",
+        "ValueRange": "3-18"
+      },
+      {
+        "Key": "CON",
+        "DisplayName": "Constitution",
+        "ValueRange": "3-18"
+      },
+      {
+        "Key": "DEX",
+        "DisplayName": "Dexterity",
+        "ValueRange": "3-18"
+      },
+      {
+        "Key": "CHA",
+        "DisplayName": "Charisma",
+        "ValueRange": "3-18"
+      }
+    ],
+    "Races": [
+    {
+      "Key": "HUMAN",
+      "DisplayName": "Human",
+      "PlayerAttributeModifiers": [
+        {
+          "Key": "CON",
+          "Modifier": "1"
+        }
+      ]
+    },
+    {
+      "Key": "ELF",
+      "DisplayName": "Elf",
+      "PlayerAttributeModifiers": [
+        {
+          "Key": "CHA",
+          "Modifier": "1"
+        },
+        {
+          "Key": "STR",
+          "Modifier": "-1"
+        }
+      ]
+    },
+    {
+      "Key": "ORC",
+      "DisplayName": "Orc",
+      "PlayerAttributeModifiers": [
+        {
+          "Key": "CHA",
+          "Modifier": "-1"
+        },
+        {
+          "Key": "STR",
+          "Modifier": "1"
+        }
+      ]
+    }
+  ]
+  }

@@ -59,7 +59,7 @@ namespace Engine.Models
             }
 
             int totalChances = MonstersHere.Sum(m => m.ChanceOfEncountering);
-            int randomNumber = RandomNumberGenerator.NumberBetween(1, totalChances);
+            int randomNumber = RandomGenerate.NumberBetween(1, totalChances);
 
             // 累加生成概率，直到它大于随机数的值
             int nowTotal = 0;

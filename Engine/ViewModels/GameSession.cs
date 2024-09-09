@@ -4,19 +4,30 @@ using Engine.Models;
 using Engine.Factories;
 using Engine.Services;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Engine.ViewModels
 {
     public class GameSession : BaseNotificationClass
     {
         private readonly MessageBroker _messageBroker = MessageBroker.GetInstance();
-        private Battle? _currentBattle;
         #region Properties
+        private GameDetails _gameDetails;
         private Player _currentPlayer;
         private Location _currentLocation;
+        private Battle? _currentBattle;
         private Monster? _currentMonster;
         private Trader? _currentTrader;
-        public string Version { get; } = "0.1.000";
+        [JsonIgnore]
+        public GameDetails GameDetails
+        {
+            get => _gameDetails;
+            set
+            {
+                _gameDetails = value;
+                OnPropertyChanged();
+            }
+        }
         [JsonIgnore]
         public World CurrentWorld { get; }
         public Player CurrentPlayer
@@ -108,8 +119,9 @@ namespace Engine.ViewModels
         #endregion
         public GameSession()
         {
+            GameDetails = GameDetailsService.ReadGameDetails();
             CurrentWorld = WorldFactory.CreateWorld();
-            int dexterity = RandomNumberGenerator.NumberBetween(3, 18);
+            int dexterity = RandomGenerate.NumberBetween(3, 18);
             CurrentPlayer = new Player("admin", "Fighter", 0, 10, 10, dexterity, 1000);
             if (!CurrentPlayer.Inventory.Weapons.Any())
             {
@@ -124,6 +136,7 @@ namespace Engine.ViewModels
         }
         public GameSession(Player player, int xCoordinate, int yCoordinate)
         {
+            GameDetails = GameDetailsService.ReadGameDetails();
             CurrentWorld = WorldFactory.CreateWorld();
             CurrentPlayer = player;
             CurrentLocation = CurrentWorld.LocationAt(xCoordinate, yCoordinate);
@@ -260,7 +273,7 @@ namespace Engine.ViewModels
                 }
             }
         }
-        private void OnPlayerKilled(object sender, System.EventArgs eventArgs)
+        private void OnPlayerKilled(object? sender, System.EventArgs eventArgs)
         {
             // 确保此次移动后清除battle
             if (_currentBattle != null)
@@ -274,11 +287,11 @@ namespace Engine.ViewModels
             CurrentLocation = CurrentWorld.LocationAt(0, -1);
             CurrentPlayer.CompletelyHeal();
         }
-        private void OnCurrentMonsterKilled(object sender, System.EventArgs eventArgs)
+        private void OnCurrentMonsterKilled(object? sender, System.EventArgs eventArgs)
         {
             CurrentMonster = CurrentLocation.GetMonster();
         }
-        private void OnCurrentPlayerLevelUp(object sender, System.EventArgs eventArgs)
+        private void OnCurrentPlayerLevelUp(object? sender, System.EventArgs eventArgs)
         {
             _messageBroker.RaiseMessage("");
             _messageBroker.RaiseMessage($"Level up! You are now level {CurrentPlayer.Level}");

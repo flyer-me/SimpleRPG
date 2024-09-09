@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Engine
 {
-    public static class RandomNumberGenerator
+    public static class RandomGenerate
     {
         private static readonly Random _generator = new Random();
         public static int NumberBetween(int minimumValue, int maximumValue)

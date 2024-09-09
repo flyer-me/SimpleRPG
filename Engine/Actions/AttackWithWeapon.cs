@@ -35,7 +35,7 @@ namespace Engine.Actions
             string targetName = (target is Player) ? "you" : $"the {target.Name.ToLower()}";
             if (CombatService.AttackSucceeded(actor, target))
             {
-                int damage = RandomNumberGenerator.NumberBetween(_minimumDamage, _maximumDamage);
+                int damage = RandomGenerate.NumberBetween(_minimumDamage, _maximumDamage);
                 ReportResult($"{actorName} hit {targetName} for {damage} point{(damage > 1 ? "s" : "")}.");
                 target.TakeDamage(damage);
             }

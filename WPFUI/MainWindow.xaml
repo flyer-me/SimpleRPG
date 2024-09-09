@@ -8,7 +8,7 @@
         d:DataContext="{d:DesignInstance viewModels:GameSession}"
         mc:Ignorable="d"
         FontSize="11pt"
-        Title="PRG" Height="768" Width="1024"
+        Title="{Binding GameDetails.Title}" Height="480" Width="640"
         KeyDown="MainWindow_OnKeyDown"
         Closing="MainWindow_OnClosing">
     <!-- FileNotFoundException: Could not find file ‘IDE\ImageName’, change d:DataContext=”{d:DesignInstance viewModels:GameSession}” to d:DataContext=”{Binding GameSession}”. -->

@@ -15,9 +15,9 @@ namespace Engine.Services
             int playerDexterity = player.Dexterity * player.Dexterity;
             int opponentDexterity = opponent.Dexterity * opponent.Dexterity;
             decimal dexterityOffset = (playerDexterity - opponentDexterity) / 10m;
-            int randomOffset = RandomNumberGenerator.NumberBetween(-10, 10);
+            int randomOffset = RandomGenerate.NumberBetween(-10, 10);
             decimal totalOffset = dexterityOffset + randomOffset;
-            return RandomNumberGenerator.NumberBetween(0, 100) <= 50 + totalOffset
+            return RandomGenerate.NumberBetween(0, 100) <= 50 + totalOffset
                        ? Combatant.Player
                        : Combatant.Opponent;
         }
@@ -27,9 +27,9 @@ namespace Engine.Services
             int playerDexterity = attacker.Dexterity * attacker.Dexterity;
             int opponentDexterity = target.Dexterity * target.Dexterity;
             decimal dexterityOffset = (playerDexterity - opponentDexterity) / 10m;
-            int randomOffset = RandomNumberGenerator.NumberBetween(-10, 10);
+            int randomOffset = RandomGenerate.NumberBetween(-10, 10);
             decimal totalOffset = dexterityOffset + randomOffset;
-            return RandomNumberGenerator.NumberBetween(0, 100) <= 50 + totalOffset;
+            return RandomGenerate.NumberBetween(0, 100) <= 50 + totalOffset;
         }
     }
 }

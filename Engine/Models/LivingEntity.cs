@@ -194,7 +194,7 @@ namespace Engine.Models
         {
             OnKilled?.Invoke(this, new System.EventArgs());
         }
-        private void RaiseActionPerformedEvent(object sender, string result)
+        private void RaiseActionPerformedEvent(object? sender, string result)
         {
             OnActionPerformed?.Invoke(this, result);
         }

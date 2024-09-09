@@ -62,7 +62,7 @@ namespace Engine.Models
         {
             _opponent.UseCurrentWeaponOn(_player);
         }
-        private void OnCombatantActionPerformed(object sender, string result)
+        private void OnCombatantActionPerformed(object? sender, string result)
         {
             _messageBroker.RaiseMessage(result);
         }
