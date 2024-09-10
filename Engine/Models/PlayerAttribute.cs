@@ -1,9 +1,11 @@
+using System.ComponentModel;
 using Engine.Services;
 namespace Engine.Models
 {
-    public class PlayerAttribute : BaseNotificationClass
+    public class PlayerAttribute : INotifyPropertyChanged
     {
         private int _modifiedValue;
+        public event PropertyChangedEventHandler? PropertyChanged;
         public string Key { get; }
         public string DisplayName { get; }
         public string ValueRange { get; }
@@ -14,7 +16,6 @@ namespace Engine.Models
             set
             {
                 _modifiedValue = value;
-                OnPropertyChanged(nameof(ModifiedValue));
             }
         }
         // The constructor this calls will put that same value into BaseValue and ModifiedValue

@@ -2,8 +2,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.csproj" />
+    <ProjectReference Include="..\RPG.Models\RPG.Models.csproj" />
+    <ProjectReference Include="..\RPG.ViewModels\RPG.ViewModels.csproj" />
   </ItemGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy $(SolutionDir)DataFiles\*.* $(ProjectDir)$(OutDir) /s /y" />
+  </Target>
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>

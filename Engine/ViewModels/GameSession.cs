@@ -4,10 +4,11 @@ using Engine.Models;
 using Engine.Factories;
 using Engine.Services;
 using Newtonsoft.Json;
+using System.ComponentModel;
 
 namespace Engine.ViewModels
 {
-    public class GameSession : BaseNotificationClass
+    public class GameSession : INotifyPropertyChanged
     {
         private readonly MessageBroker _messageBroker = MessageBroker.GetInstance();
         #region Properties
@@ -17,6 +18,9 @@ namespace Engine.ViewModels
         private Battle? _currentBattle;
         private Monster? _currentMonster;
         private Trader? _currentTrader;
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
         [JsonIgnore]
         public GameDetails GameDetails
         {
@@ -24,7 +28,6 @@ namespace Engine.ViewModels
             set
             {
                 _gameDetails = value;
-                OnPropertyChanged();
             }
         }
         [JsonIgnore]
@@ -45,7 +48,6 @@ namespace Engine.ViewModels
                     _currentPlayer.OnLeveledUp += OnCurrentPlayerLevelUp;
                     _currentPlayer.OnKilled += OnPlayerKilled;
                 }
-                OnPropertyChanged(nameof(CurrentPlayer));
             }
         }
         public Location CurrentLocation
@@ -54,12 +56,6 @@ namespace Engine.ViewModels
             set
             {
                 _currentLocation = value;
-
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(HasLocationToNorth));
-                OnPropertyChanged(nameof(HasLocationToSouth));
-                OnPropertyChanged(nameof(HasLocationToWest));
-                OnPropertyChanged(nameof(HasLocationToEast));
                 CompleteQuestsAtLocation();
                 GivePlayerQuestAtLocation();
                 CurrentMonster = CurrentLocation.GetMonster();
@@ -84,8 +80,6 @@ namespace Engine.ViewModels
                     _currentBattle = new Battle(CurrentPlayer, CurrentMonster!);
                     _currentBattle.OnCombatVictory += OnCurrentMonsterKilled;
                 }
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(HasMonster));
             }
         }
         [JsonIgnore]
@@ -95,8 +89,6 @@ namespace Engine.ViewModels
             set
             {
                 _currentTrader = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(HasTrader));
             }
         }
         [JsonIgnore]

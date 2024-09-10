@@ -5,10 +5,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Engine.Services;
+using System.ComponentModel;
 
 namespace Engine.Models
 {
-    public abstract class LivingEntity : BaseNotificationClass
+    public abstract class LivingEntity : INotifyPropertyChanged
     {
         #region Properties
         private string _name = string.Empty;
@@ -26,7 +27,6 @@ namespace Engine.Models
             private set
             {
                 _name = value;
-                OnPropertyChanged();
             }
         }
         public int CurrentHitPoints
@@ -35,7 +35,6 @@ namespace Engine.Models
             private set
             {
                 _currentHitPoints = value;
-                OnPropertyChanged();
             }
         }
         public int MaximumHitPoints
@@ -44,7 +43,6 @@ namespace Engine.Models
             protected set
             {
                 _maximumHitPoints = value;
-                OnPropertyChanged();
             }
         }
         public int Assets
@@ -53,7 +51,6 @@ namespace Engine.Models
             private set
             {
                 _assets = value;
-                OnPropertyChanged();
             }
         }
         public int Level
@@ -62,7 +59,6 @@ namespace Engine.Models
             protected set
             {
                 _level = value;
-                OnPropertyChanged(nameof(Level));
             }
         }
         public GameItem CurrentWeapon
@@ -79,7 +75,6 @@ namespace Engine.Models
                 {
                     _currentWeapon.Action.OnActionPerformed += RaiseActionPerformedEvent;
                 }
-                OnPropertyChanged();
             }
         }
         public GameItem CurrentConsumable
@@ -96,7 +91,6 @@ namespace Engine.Models
                 {
                     _currentConsumable.Action.OnActionPerformed += RaiseActionPerformedEvent;
                 }
-                OnPropertyChanged();
             }
         }
         public Inventory Inventory
@@ -105,7 +99,6 @@ namespace Engine.Models
             private set
             {
                 _inventory = value;
-                OnPropertyChanged();
             }
         }
         [JsonIgnore]
@@ -115,6 +108,8 @@ namespace Engine.Models
         #endregion
         public event EventHandler<string> OnActionPerformed;
         public event EventHandler OnKilled;
+        public event PropertyChangedEventHandler? PropertyChanged;
+
         protected LivingEntity(string name, int maximumHitPoints, int currentHitPoints,
                                 IEnumerable<PlayerAttribute> attributes, int assets,
                                 int level = 1)
