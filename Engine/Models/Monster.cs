@@ -1,9 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Engine.Factories;
 
 namespace Engine.Models
@@ -15,10 +11,10 @@ namespace Engine.Models
         public string ImageName { get; }
         public int RewardExperiencePoints { get; }
         public Monster(int id, string name, string imageName,
-                        int maximumHitPoints,int dexterity,
+                        int maximumHitPoints, IEnumerable<PlayerAttribute> attributes,
                         GameItem currentWeapon,
                         int rewardExperiencePoints, int rewardAssets):
-            base(name, maximumHitPoints, maximumHitPoints, dexterity, rewardAssets)
+            base(name, maximumHitPoints, maximumHitPoints, attributes, rewardAssets)
         {
             ID = id;
             ImageName = imageName;
@@ -33,7 +29,7 @@ namespace Engine.Models
         public Monster GetNewInstance()
         {
             Monster newMonster =
-                    new Monster(ID, Name, ImageName, MaximumHitPoints, Dexterity,
+                    new Monster(ID, Name, ImageName, MaximumHitPoints, Attributes,
                     CurrentWeapon, RewardExperiencePoints, Assets);
             foreach (ItemPercentage itemPercentage in _lootTable)
             {

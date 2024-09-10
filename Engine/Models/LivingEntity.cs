@@ -12,7 +12,6 @@ namespace Engine.Models
     {
         #region Properties
         private string _name = string.Empty;
-        private int _dexterity;
         private int _currentHitPoints;
         private int _maximumHitPoints;
         private int _assets;
@@ -20,21 +19,13 @@ namespace Engine.Models
         private GameItem _currentWeapon;
         private GameItem _currentConsumable;
         private Inventory _inventory;
+        public ObservableCollection<PlayerAttribute> Attributes { get; } = [];
         public string Name
         {
             get => _name;
             private set
             {
                 _name = value;
-                OnPropertyChanged();
-            }
-        }
-        public int Dexterity
-        {
-            get => _dexterity;
-            private set
-            {
-                _dexterity = value;
                 OnPropertyChanged();
             }
         }
@@ -125,15 +116,19 @@ namespace Engine.Models
         public event EventHandler<string> OnActionPerformed;
         public event EventHandler OnKilled;
         protected LivingEntity(string name, int maximumHitPoints, int currentHitPoints,
-                                int dexterity, int assets, int level = 1)
+                                IEnumerable<PlayerAttribute> attributes, int assets,
+                                int level = 1)
         {
             Name = name;
-            Dexterity = dexterity;
             MaximumHitPoints = maximumHitPoints;
             CurrentHitPoints = currentHitPoints;
             Assets = assets;
             Level = level;
             Inventory = new Inventory();
+            foreach (var attribute in attributes)
+            {
+                Attributes.Add(attribute);
+            }
         }
         public void UseCurrentWeaponOn(LivingEntity target)
         {

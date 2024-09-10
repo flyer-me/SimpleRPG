@@ -3,22 +3,24 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using Engine.Models;
+using Engine.Services;
 using Engine.Shared;
 namespace Engine.Factories
 {
     public static class MonsterFactory
     {
         private const string GAME_DATA_FILENAME = ".\\GameData\\Monsters.xml";
+        private static readonly GameDetails _gameDetails;
         private static readonly List<Monster> _baseMonsters = new List<Monster>();
         static MonsterFactory()
         {
             if (File.Exists(GAME_DATA_FILENAME))
             {
+                _gameDetails = GameDetailsService.ReadGameDetails();
                 XmlDocument data = new XmlDocument();
                 data.LoadXml(File.ReadAllText(GAME_DATA_FILENAME));
                 string rootImagePath =
-                    data.SelectSingleNode("/Monsters")
-                        .AttributeAsString("RootImagePath");
+                    data.SelectSingleNode("/Monsters").AttributeAsString("RootImagePath");
                 LoadMonstersFromNodes(data.SelectNodes("/Monsters/Monster"), rootImagePath);
             }
             else
@@ -34,12 +36,17 @@ namespace Engine.Factories
             }
             foreach (XmlNode node in nodes)
             {
+                var attributes = _gameDetails.PlayerAttributes;
+                attributes.First(a => a.Key.Equals("DEX")).BaseValue =
+                    Convert.ToInt32(node.SelectSingleNode("./Dexterity").InnerText);
+                attributes.First(a => a.Key.Equals("DEX")).ModifiedValue =
+                    Convert.ToInt32(node.SelectSingleNode("./Dexterity").InnerText);
                 Monster monster =
                     new Monster(node.AttributeAsInt("ID"),
                                 node.AttributeAsString("Name"),
                                 $".{rootImagePath}{node.AttributeAsString("ImageName")}",
                                 node.AttributeAsInt("MaximumHitPoints"),
-                                Convert.ToInt32(node.SelectSingleNode("./Dexterity")?.InnerText ?? "0"),
+                                attributes,
                                 ItemFactory.CreateGameItem(node.AttributeAsInt("WeaponID")),
                                 node.AttributeAsInt("RewardXP"),
                                 node.AttributeAsInt("Gold"));

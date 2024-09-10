@@ -60,8 +60,7 @@ namespace Engine.ViewModels
         }
         public Player GetPlayer()
         {
-            Player player = new Player(Name, "Fighter", 0, 10, 10,
-                              PlayerAttributes.FirstOrDefault(pa => pa.Key.Equals("DEX"))?.ModifiedValue ?? 13, 10);
+            Player player = new Player(Name, 0, 10, 10, PlayerAttributes, 10);
             player.AddItemToInventory(ItemFactory.CreateGameItem(1001));
             player.AddItemToInventory(ItemFactory.CreateGameItem(2001));
             player.LearnRecipe(RecipeFactory.RecipeByID(1));

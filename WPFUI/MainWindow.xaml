@@ -3,17 +3,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WPFUI"
         xmlns:viewModels="clr-namespace:Engine.ViewModels;assembly=Engine"
         d:DataContext="{d:DesignInstance viewModels:GameSession}"
         mc:Ignorable="d"
         FontSize="11pt"
-        Title="{Binding GameDetails.Title}" Height="480" Width="640"
+        Title="{Binding GameDetails.Title}" Height="768" Width="1024"
         KeyDown="MainWindow_OnKeyDown"
         Closing="MainWindow_OnClosing">
-    <!-- FileNotFoundException: Could not find file ‘IDE\ImageName’, change d:DataContext=”{d:DesignInstance viewModels:GameSession}” to d:DataContext=”{Binding GameSession}”. -->
     <Window.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibility"/>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -21,23 +19,20 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="225"/>
         </Grid.RowDefinitions>
-
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="250"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <!-- MainWindow -->
+        <!-- Menu -->
         <Menu Grid.Row="0" Grid.Column="0"
               Grid.ColumnSpan="2"
               FontSize="11pt"
               Background="AliceBlue">
             <MenuItem Header="File">
-                <MenuItem Header="Start New Game"
+                <MenuItem Header="New Game"
                           Click="StartNewGame_OnClick"/>
                 <Separator/>
-                <MenuItem Header="Load"
-                          Click="LoadGame_OnClick"/>
-                <MenuItem Header="Save"
+                <MenuItem Header="Save Game"
                           Click="SaveGame_OnClick"/>
                 <Separator/>
                 <MenuItem Header="Exit"
@@ -51,7 +46,7 @@
                           IsEnabled="False"/>
             </MenuItem>
         </Menu>
-        <!-- Player’s Stats -->
+        <!-- Player stats -->
         <Grid Grid.Row="1" Grid.Column="0" Background="Aquamarine">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -60,44 +55,63 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-
-            <Label Grid.Row="0" Grid.Column="0" Content="Name"/>
+            <Label Grid.Row="0" Grid.Column="0" Content="Name:"/>
             <Label Grid.Row="0" Grid.Column="1" Content="{Binding CurrentPlayer.Name}"/>
-            <Label Grid.Row="1" Grid.Column="0" Content="Character"/>
-            <Label Grid.Row="1" Grid.Column="1" Content="{Binding CurrentPlayer.CharacterClass}"/>
-            <Label Grid.Row="2" Grid.Column="0" Content="Dexterity:"/>
-            <Label Grid.Row="2" Grid.Column="1" Content="{Binding CurrentPlayer.Dexterity}"/>
-            <Label Grid.Row="3" Grid.Column="0" Content="HitPoints"/>
-            <Label Grid.Row="3" Grid.Column="1" Content="{Binding CurrentPlayer.CurrentHitPoints}"/>
-            <Label Grid.Row="4" Grid.Column="0" Content="Assets"/>
-            <Label Grid.Row="4" Grid.Column="1" Content="{Binding CurrentPlayer.Assets}"/>
-            <Label Grid.Row="5" Grid.Column="0" Content="ExperiencePoints"/>
-            <Label Grid.Row="5" Grid.Column="1" Content="{Binding CurrentPlayer.ExperiencePoints}"/>
-            <Label Grid.Row="6" Grid.Column="0" Content="Level"/>
-            <Label Grid.Row="6" Grid.Column="1" Content="{Binding CurrentPlayer.Level}"/>
+            <Label Grid.Row="1" Grid.Column="0" Content="Hit points:"/>
+            <Label Grid.Row="1" Grid.Column="1" Content="{Binding CurrentPlayer.CurrentHitPoints}"/>
+            <Label Grid.Row="2" Grid.Column="0" Content="Assets:"/>
+            <Label Grid.Row="2" Grid.Column="1" Content="{Binding CurrentPlayer.Assets}"/>
+            <Label Grid.Row="3" Grid.Column="0" Content="XP:"/>
+            <Label Grid.Row="3" Grid.Column="1" Content="{Binding CurrentPlayer.ExperiencePoints}"/>
+            <Label Grid.Row="4" Grid.Column="0" Content="Level:"/>
+            <Label Grid.Row="4" Grid.Column="1" Content="{Binding CurrentPlayer.Level}"/>
+            <!-- Player Attributes -->
+            <ListBox Grid.Row="5" Grid.Column="0"
+                      Grid.ColumnSpan="2"
+                      Background="Aquamarine"
+                      BorderThickness="0"
+                      Grid.IsSharedSizeScope="True"
+                      ItemsSource="{Binding CurrentPlayer.Attributes}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition SharedSizeGroup="Description"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{Binding DisplayName}"
+                                           HorizontalAlignment="Left"
+                                           MinWidth="100"/>
+                            </Grid>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition SharedSizeGroup="ModifiedValue"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{Binding ModifiedValue}"
+                                           HorizontalAlignment="Right"/>
+                            </Grid>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Grid>
-        <!-- main session -->
+        <!-- Gameplay -->
         <Grid Grid.Row="1" Grid.Column="1"
               Background="Beige">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
-
-            <!-- GameMessages -->
+            <!-- Game Messages -->
             <Border Grid.Row="0" Grid.Column="0"
                     Grid.RowSpan="2"
                     BorderBrush="Gainsboro"
@@ -112,21 +126,19 @@
                     </RichTextBox.Resources>
                 </RichTextBox>
             </Border>
-
-            <!-- Location -->
+            <!-- Location information -->
             <Border Grid.Row="0" Grid.Column="1"
                     BorderBrush="Gainsboro"
                     BorderThickness="1">
-
                 <Grid Margin="3">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-
-                    <TextBlock Grid.Row="0" HorizontalAlignment="Center" Text="{Binding CurrentLocation.Name}"/>
-
+                    <TextBlock Grid.Row="0"
+                               HorizontalAlignment="Center"
+                               Text="{Binding CurrentLocation.Name}"/>
                     <Image Grid.Row="1"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
@@ -134,12 +146,13 @@
                            Width="125"
                            Source="{Binding CurrentLocation.ImageName,
                                             Converter={StaticResource FileToBitmapConverter}}"/>
-
-                    <TextBlock Grid.Row="2" HorizontalAlignment="Center" Text="{Binding CurrentLocation.Description}"/>
+                    <TextBlock Grid.Row="2"
+                               HorizontalAlignment="Center"
+                               Text="{Binding CurrentLocation.Description}"
+                               TextWrapping="Wrap"/>
                 </Grid>
-
             </Border>
-            <!-- Monster -->
+            <!-- Monster information -->
             <Border Grid.Row="1" Grid.Column="1"
                     BorderBrush="Gainsboro"
                     BorderThickness="1">
@@ -159,7 +172,7 @@
                            Height="125"
                            Width="125"
                            Source="{Binding CurrentMonster.ImageName,
-                                            Converter={StaticResource FileToBitmapConverter}}" />
+                                            Converter={StaticResource FileToBitmapConverter}}"/>
                     <StackPanel Grid.Row="2"
                                 Visibility="{Binding HasMonster, Converter={StaticResource BooleanToVisibility}}"
                                 HorizontalAlignment="Center"
@@ -171,9 +184,11 @@
             </Border>
         </Grid>
         <!-- Inventory, Quests, and Recipes -->
-        <Grid Grid.Row="2" Grid.Column="0" Background="BurlyWood">
+        <Grid Grid.Row="2" Grid.Column="0"
+              Background="BurlyWood">
             <TabControl x:Name="PlayerDataTabControl">
-                <TabItem Header="Inventories" x:Name="InventoryTabItem">
+                <TabItem Header="Inventory"
+                         x:Name="InventoryTabItem">
                     <DataGrid ItemsSource="{Binding CurrentPlayer.Inventory.GroupedInventory}"
                               AutoGenerateColumns="False"
                               HeadersVisibility="Column">
@@ -181,7 +196,7 @@
                             <DataGridTextColumn Header="Description"
                                                 Binding="{Binding Item.Name, Mode=OneWay}"
                                                 Width="*"/>
-                            <DataGridTextColumn Header="Quantity"
+                            <DataGridTextColumn Header="Qty"
                                                 IsReadOnly="True"
                                                 Width="Auto"
                                                 Binding="{Binding Quantity, Mode=OneWay}"/>
@@ -191,7 +206,8 @@
                         </DataGrid.Columns>
                     </DataGrid>
                 </TabItem>
-                <TabItem Header="Quests" x:Name="QuestsTabItem">
+                <TabItem Header="Quests"
+                         x:Name="QuestsTabItem">
                     <DataGrid ItemsSource="{Binding CurrentPlayer.Quests}"
                               AutoGenerateColumns="False"
                               HeadersVisibility="Column">
@@ -206,13 +222,14 @@
                                     </Style>
                                 </DataGridTextColumn.CellStyle>
                             </DataGridTextColumn>
-                            <DataGridTextColumn Header="IsCompleted"
+                            <DataGridTextColumn Header="Done?"
                                                 Binding="{Binding IsCompleted, Mode=OneWay}"
                                                 Width="Auto"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </TabItem>
-                <TabItem Header="Recipes" x:Name="RecipesTabItem">
+                <TabItem Header="Recipes"
+                         x:Name="RecipesTabItem">
                     <DataGrid ItemsSource="{Binding CurrentPlayer.Recipes}"
                               AutoGenerateColumns="False"
                               HeadersVisibility="Column">
@@ -241,17 +258,16 @@
                 </TabItem>
             </TabControl>
         </Grid>
-        <Label Grid.Row="2" Grid.Column="1" Content="Combat/Movement Controls" Background="Lavender"/>
-        <Grid Grid.Row="2" Grid.Column="1" Background="Lavender">
+        <!-- Action controls -->
+        <Grid Grid.Row="2" Grid.Column="1"
+              Background="Lavender">
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="255"/>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="255" />
             </Grid.ColumnDefinitions>
-
             <!-- Combat Controls -->
             <Grid Grid.Row="0" Grid.Column="0"
                   HorizontalAlignment="Center"
@@ -284,43 +300,44 @@
                         Content="Use"
                         Click="OnClick_UseCurrentConsumable"/>
             </Grid>
-            <!-- 移动控制 -->
+            <!-- Movement Controls -->
             <Grid Grid.Row="0" Grid.Column="1">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-
-                <Button Grid.Row="0" Grid.Column="1" Height="25" Width="65" Margin="10"
-                        Click="Button_Click_MoveNorth"
+                <Button Grid.Row="0" Grid.Column="1"
+                        Height="25" Width="65" Margin="10"
+                        Click="OnClick_MoveNorth"
                         Visibility="{Binding HasLocationToNorth, Converter={StaticResource BooleanToVisibility}}"
-                        Content="向北"/>
-                <Button Grid.Row="1" Grid.Column="0" Height="25" Width="65" Margin="10"
-                        Click="Button_Click_MoveWest"
+                        Content="North"/>
+                <Button Grid.Row="1" Grid.Column="0"
+                        Height="25" Width="65" Margin="10"
+                        Click="OnClick_MoveWest"
                         Visibility="{Binding HasLocationToWest, Converter={StaticResource BooleanToVisibility}}"
-                        Content="向西"/>
+                        Content="West"/>
                 <Button Grid.Row="1" Grid.Column="1"
                         Height="25" Width="65" Margin="10"
                         Click="OnClick_DisplayTradeScreen"
                         Visibility="{Binding HasTrader, Converter={StaticResource BooleanToVisibility}}"
-                        Content="交易"/>
-                <Button Grid.Row="1" Grid.Column="2" Height="25" Width="65" Margin="10"
-                        Click="Button_Click_MoveEast"
+                        Content="Trade"/>
+                <Button Grid.Row="1" Grid.Column="2"
+                        Height="25" Width="65" Margin="10"
+                        Click="OnClick_MoveEast"
                         Visibility="{Binding HasLocationToEast, Converter={StaticResource BooleanToVisibility}}"
-                        Content="向东"/>
-                <Button Grid.Row="2" Grid.Column="1" Height="25" Width="65" Margin="10"
-                        Click="Button_Click_MoveSouth"
+                        Content="East"/>
+                <Button Grid.Row="2" Grid.Column="1"
+                        Height="25" Width="65" Margin="10"
+                        Click="OnClick_MoveSouth"
                         Visibility="{Binding HasLocationToSouth, Converter={StaticResource BooleanToVisibility}}"
-                        Content="向南"/>
+                        Content="South"/>
             </Grid>
-
         </Grid>
     </Grid>
 </Window>

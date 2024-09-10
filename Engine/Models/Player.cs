@@ -1,26 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Engine.Models
 {
     public class Player : LivingEntity
     {
         #region Properties
-        private string _characterClass = String.Empty;
         private int _experiencePoints;
-        public string CharacterClass
-        {
-            get { return _characterClass; }
-            set
-            {
-                _characterClass = value;
-                OnPropertyChanged(nameof(CharacterClass));
-            }
-        }
         public int ExperiencePoints
         {
             get { return _experiencePoints; }
@@ -35,11 +22,11 @@ namespace Engine.Models
         public ObservableCollection<Recipe> Recipes { get; } = new ObservableCollection<Recipe>();
         #endregion
         public event EventHandler OnLeveledUp;
-        public Player(string name, string characterClass, int experiencePoints,
-                      int maximumHitPoints, int currentHitPoints, int dexterity, int assets) :
-                base(name, maximumHitPoints, currentHitPoints, dexterity, assets)
+        public Player(string name, int experiencePoints,
+                      int maximumHitPoints, int currentHitPoints,
+                      IEnumerable<PlayerAttribute> attributes, int assets) :
+                base(name, maximumHitPoints, currentHitPoints, attributes, assets)
         {
-            CharacterClass = characterClass;
             ExperiencePoints = experiencePoints;
         }
         public void AddExperience(int experiencePoints)

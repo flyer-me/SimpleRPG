@@ -24,29 +24,25 @@ namespace WPFUI
         private readonly Dictionary<Key, Action> _userInputActions =
             new Dictionary<Key, Action>();
         private GameSession _gameSession;
-        public MainWindow()
+        public MainWindow(Player player, int xCoordinate = 0, int yCoordinate = 0)
         {
             InitializeComponent();
             InitializeUserInputActions();
-            SetActiveGameSessionTo(new GameSession());
+            SetActiveGameSessionTo(new GameSession(player, 0, 0));
         }
-        public MainWindow(Player player) : this()
-        {
-            _gameSession.CurrentPlayer = player;
-        }
-        private void Button_Click_MoveNorth(object sender, RoutedEventArgs e)
+        private void OnClick_MoveNorth(object sender, RoutedEventArgs e)
         {
             _gameSession.MoveNorth();
         }
-        private void Button_Click_MoveWest(object sender, RoutedEventArgs e)
+        private void OnClick_MoveWest(object sender, RoutedEventArgs e)
         {
             _gameSession.MoveWest();
         }
-        private void Button_Click_MoveEast(object sender, RoutedEventArgs e)
+        private void OnClick_MoveEast(object sender, RoutedEventArgs e)
         {
             _gameSession.MoveEast();
         }
-        private void Button_Click_MoveSouth(object sender, RoutedEventArgs e)
+        private void OnClick_MoveSouth(object sender, RoutedEventArgs e)
         {
             _gameSession.MoveSouth();
         }
@@ -120,20 +116,9 @@ namespace WPFUI
         }
         private void StartNewGame_OnClick(object sender, RoutedEventArgs e)
         {
-            SetActiveGameSessionTo(new GameSession());
-        }
-        private void LoadGame_OnClick(object sender, RoutedEventArgs e)
-        {
-            OpenFileDialog openFileDialog =
-                new OpenFileDialog
-                {
-                    InitialDirectory = AppDomain.CurrentDomain.BaseDirectory,
-                    Filter = $"Saved games (*.{SAVE_GAME_FILE_EXTENSION})|*.{SAVE_GAME_FILE_EXTENSION}"
-                };
-            if(openFileDialog.ShowDialog() == true)
-            {
-                SetActiveGameSessionTo(SaveService.LoadSaveOrCreate(openFileDialog.FileName));
-            }
+            Startup startup = new Startup();
+            startup.Show();
+            Close();
         }
         private void SaveGame_OnClick(object sender, RoutedEventArgs e)
         {
@@ -145,11 +130,15 @@ namespace WPFUI
         }
         private void MainWindow_OnClosing(object sender, CancelEventArgs e)
         {
+            AskToSaveGame();
+        }
+        private void AskToSaveGame()
+        {
             YesNoWindow message =
-                new YesNoWindow("Game Not Save", "Do you want to save your game?");
+                new YesNoWindow("Save", "Do you want to save?");
             message.Owner = GetWindow(this);
             message.ShowDialog();
-            if (message.ClickedYes)
+            if(message.ClickedYes)
             {
                 SaveGame();
             }

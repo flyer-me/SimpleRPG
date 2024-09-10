@@ -8,8 +8,8 @@ namespace Engine.Services
     {
         public static GameDetails ReadGameDetails()
         {
-            JObject gameDetailsJson =
-                JObject.Parse(File.ReadAllText(".\\GameData\\GameDetails.json"));
+            string json = File.ReadAllText(".\\GameData\\GameDetails.json");
+            JObject gameDetailsJson = JObject.Parse(json);
             GameDetails gameDetails =
                 new GameDetails(gameDetailsJson.StringValueOf("Title"),
                                 gameDetailsJson.StringValueOf("Version"));

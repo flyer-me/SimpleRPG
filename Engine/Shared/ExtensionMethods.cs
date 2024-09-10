@@ -1,11 +1,17 @@
 using System;
 using System.Xml;
 using Newtonsoft.Json.Linq;
+using Engine.Models;
 
 namespace Engine.Shared
 {
     public static class ExtensionMethods
     {
+        public static PlayerAttribute GetAttribute(this LivingEntity entity, string attributeKey)
+        {
+            return entity.Attributes.First( i => i.Key.Equals(attributeKey,
+                                                StringComparison.CurrentCultureIgnoreCase));
+        }
         public static int AttributeAsInt(this XmlNode node, string attributeName)
         {
             return Convert.ToInt32(node.AttributeAsString(attributeName));
