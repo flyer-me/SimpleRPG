@@ -62,7 +62,7 @@
                 <DataGridTextColumn Header="Modified"
                                     Binding="{Binding ModifiedValue}"
                                     Visibility="{Binding HasRaceAttributeModifiers,
-                                                 Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                                Converter={StaticResource BooleanToVisibilityConverter}}"/>
             </DataGrid.Columns>
         </DataGrid>
         <Grid Grid.Row="4" Grid.Column="0"

@@ -8,24 +8,14 @@ namespace Engine.ViewModels
 {
     public class CharacterCreationViewModel : INotifyPropertyChanged
     {
-        private Race _selectedRace;
         public event PropertyChangedEventHandler? PropertyChanged;
         public GameDetails GameDetails { get; }
-        public Race SelectedRace
-        {
-            get => _selectedRace;
-            set
-            {
-                _selectedRace = value;
-            }
-        }
-        public string Name { get; set; } = string.Empty;
-        public ObservableCollection<PlayerAttribute> PlayerAttributes { get; set; } =
-            new ObservableCollection<PlayerAttribute>();
-        public bool HasRaces =>
-            GameDetails.Races.Any();
+        public Race SelectedRace { get; init; }
+        public string Name { get; init; } = string.Empty;
+        public ObservableCollection<PlayerAttribute> PlayerAttributes { get; } = [];
+        public bool HasRaces => GameDetails.Races.Count != 0;
         public bool HasRaceAttributeModifiers =>
-            HasRaces && GameDetails.Races.Any(r => r.PlayerAttributeModifiers.Any());
+            HasRaces && GameDetails.Races.Any(r => r.PlayerAttributeModifiers.Count != 0);
         public CharacterCreationViewModel()
         {
             GameDetails = GameDetailsService.ReadGameDetails();

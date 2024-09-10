@@ -4,20 +4,12 @@ namespace Engine.Models
 {
     public class PlayerAttribute : INotifyPropertyChanged
     {
-        private int _modifiedValue;
         public event PropertyChangedEventHandler? PropertyChanged;
         public string Key { get; }
         public string DisplayName { get; }
         public string ValueRange { get; }
         public int BaseValue { get; set; }
-        public int ModifiedValue
-        {
-            get => _modifiedValue;
-            set
-            {
-                _modifiedValue = value;
-            }
-        }
+        public int ModifiedValue {get; set; }
         // The constructor this calls will put that same value into BaseValue and ModifiedValue
         public PlayerAttribute(string key, string displayName, string valueRange)
             : this(key, displayName, valueRange, RandomGenerate.NumberBetween(int.Parse(valueRange.Split('-')[0]), int.Parse(valueRange.Split('-')[1])))
