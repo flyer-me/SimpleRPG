@@ -48,7 +48,7 @@ namespace Engine.ViewModels
                 _currentLocation = value;
                 CompleteQuestsAtLocation();
                 GivePlayerQuestAtLocation();
-                CurrentMonster = CurrentLocation.GetMonster();
+                CurrentMonster = MonsterFactory.GetMonsterAtLocation(CurrentLocation);;
                 CurrentTrader = CurrentLocation.TraderHere;
             }
         }
@@ -201,7 +201,7 @@ namespace Engine.ViewModels
                 }
             }
         }
-        private void OnConsumableActionPerformed(object sender, string result)
+        private void OnConsumableActionPerformed(object? sender, string result)
         {
             _messageBroker.RaiseMessage(result);
         }
@@ -230,7 +230,7 @@ namespace Engine.ViewModels
                 }
             }
         }
-        private void OnPlayerKilled(object? sender, System.EventArgs eventArgs)
+        private void OnPlayerKilled(object? sender, EventArgs eventArgs)
         {
             // 确保此次移动后清除battle
             if (_currentBattle != null)
@@ -244,11 +244,11 @@ namespace Engine.ViewModels
             CurrentLocation = CurrentWorld.LocationAt(0, -1);
             CurrentPlayer.CompletelyHeal();
         }
-        private void OnCurrentMonsterKilled(object? sender, System.EventArgs eventArgs)
+        private void OnCurrentMonsterKilled(object? sender, EventArgs eventArgs)
         {
-            CurrentMonster = CurrentLocation.GetMonster();
+            CurrentMonster = MonsterFactory.GetMonsterAtLocation(CurrentLocation);
         }
-        private void OnCurrentPlayerLevelUp(object? sender, System.EventArgs eventArgs)
+        private void OnCurrentPlayerLevelUp(object? sender, EventArgs eventArgs)
         {
             _messageBroker.RaiseMessage("");
             _messageBroker.RaiseMessage($"Level up! You are now level {CurrentPlayer.Level}");

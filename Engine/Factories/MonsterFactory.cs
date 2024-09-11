@@ -5,13 +5,14 @@ using System.Xml;
 using Engine.Models;
 using Engine.Services;
 using Engine.Shared;
+using RPG.Core;
 namespace Engine.Factories
 {
     public static class MonsterFactory
     {
         private const string GAME_DATA_FILENAME = ".\\GameData\\Monsters.xml";
         private static readonly GameDetails _gameDetails;
-        private static readonly List<Monster> _baseMonsters = new List<Monster>();
+        private static readonly List<Monster> _baseMonsters = [];
         static MonsterFactory()
         {
             if (File.Exists(GAME_DATA_FILENAME))
@@ -27,6 +28,27 @@ namespace Engine.Factories
             {
                 throw new FileNotFoundException($"Missing data file: {GAME_DATA_FILENAME}");
             }
+        }
+        public static Monster GetMonsterAtLocation(Location location)
+        {
+            if (location.MonstersHere.Count == 0)
+            {
+                return null;
+            }
+            int totalChances = location.MonstersHere.Sum(m => m.ChanceOfEncounter);
+            int randomNumber = RandomGenerate.NumberBetween(1, totalChances);
+            // 当累加数 ≥ 随机数(1，所有概率总和)时，返回
+            int currentSum = 0;
+            foreach (var monsterEncounter in location.MonstersHere)
+            {
+                currentSum += monsterEncounter.ChanceOfEncounter;
+                if (randomNumber <= currentSum)
+                {
+                    return GetMonster(monsterEncounter.MonsterID);
+                }
+            }
+            // 保证产生
+            return GetMonster(location.MonstersHere.Last().MonsterID);
         }
         private static void LoadMonstersFromNodes(XmlNodeList nodes, string rootImagePath)
         {
@@ -64,7 +86,15 @@ namespace Engine.Factories
         }
         public static Monster GetMonster(int id)
         {
-            return _baseMonsters.FirstOrDefault(m => m.ID == id)?.GetNewInstance();
+            Monster monster = _baseMonsters.FirstOrDefault(m => m.ID == id).Clone();
+            foreach (var itemPercentage in monster.LootTable)
+            {
+                if (RandomGenerate.NumberBetween(1, 100) <= itemPercentage.Percentage)
+                {
+                    monster.AddItemToInventory(ItemFactory.CreateGameItem(itemPercentage.ID));
+                }
+            }
+            return monster;
         }
     }
 }

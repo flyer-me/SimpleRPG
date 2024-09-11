@@ -1,9 +1,4 @@
-﻿using Engine.Factories;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using RPG.Core;
+﻿using Newtonsoft.Json;
 
 namespace Engine.Models
 {
@@ -40,40 +35,13 @@ namespace Engine.Models
             {
                 // 如果Monster已经在这个位置，更新它的生成概率
                 MonstersHere.First(m => m.MonsterID == monsterID)
-                            .ChanceOfEncountering = chanceOfEncountering;
+                            .ChanceOfEncounter = chanceOfEncountering;
             }
             else
             {
                 // 否则，在此位置添加该Monster的生成概率
                 MonstersHere.Add(new MonsterEncounter(monsterID, chanceOfEncountering));
             }
-        }
-
-        /// <summary>
-        /// 由本Location的所有Monster生成概率，随机生成一个Monster
-        /// </summary>
-        public Monster? GetMonster()
-        {
-            if (!MonstersHere.Any())
-            {
-                return null;
-            }
-
-            int totalChances = MonstersHere.Sum(m => m.ChanceOfEncountering);
-            int randomNumber = RandomGenerate.NumberBetween(1, totalChances);
-
-            // 累加生成概率，直到它大于随机数的值
-            int nowTotal = 0;
-            foreach (MonsterEncounter monsterEncounter in MonstersHere)
-            {
-                nowTotal += monsterEncounter.ChanceOfEncountering;
-                if (randomNumber <= nowTotal)
-                {
-                    return MonsterFactory.GetMonster(monsterEncounter.MonsterID);
-                }
-            }
-            // 保证生成
-            return MonsterFactory.GetMonster(MonstersHere.Last().MonsterID);
         }
     }
 }

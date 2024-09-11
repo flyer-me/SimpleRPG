@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
-using Engine.Factories;
-using RPG.Core;
 
 namespace Engine.Models
 {
     public class Monster : LivingEntity
     {
-        private readonly List<ItemPercentage> _lootTable = new List<ItemPercentage>();
+        public List<ItemPercentage> LootTable {get; } = [];
         public int ID { get; }
         public string ImageName { get; }
         public int RewardExperiencePoints { get; }
@@ -24,25 +22,15 @@ namespace Engine.Models
         }
         public void AddItemToLootTable(int id, int percentage)
         {
-            _lootTable.RemoveAll(item => item.ID == id);
-            _lootTable.Add(new ItemPercentage(id, percentage));
+            LootTable.RemoveAll(item => item.ID == id);
+            LootTable.Add(new ItemPercentage(id, percentage));
         }
-        public Monster GetNewInstance()
+        public Monster Clone()
         {
-            Monster newMonster =
-                    new Monster(ID, Name, ImageName, MaximumHitPoints, Attributes,
-                    CurrentWeapon, RewardExperiencePoints, Assets);
-            foreach (ItemPercentage itemPercentage in _lootTable)
-            {
-                // Clone the loot table - even though we probably won't need it
-                newMonster.AddItemToLootTable(itemPercentage.ID, itemPercentage.Percentage);
-
-                if(RandomGenerate.NumberBetween(1, 100) <= itemPercentage.Percentage)
-                {
-                    newMonster.AddItemToInventory(ItemFactory.CreateGameItem(itemPercentage.ID));
-                }
-            }
-            return newMonster;
+            Monster monster = new(ID, Name, ImageName, MaximumHitPoints,
+                Attributes, CurrentWeapon, RewardExperiencePoints, Assets);
+            monster.LootTable.AddRange(LootTable);
+            return monster;
         }
     }
 }
