@@ -28,7 +28,7 @@ namespace WPFUI
         {
             InitializeComponent();
             InitializeUserInputActions();
-            SetActiveGameSessionTo(new GameSession(player, 0, 0));
+            SetActiveGameSessionTo(new GameSession(player, xCoordinate, yCoordinate));
         }
         private void OnClick_MoveNorth(object sender, RoutedEventArgs e)
         {
@@ -149,11 +149,14 @@ namespace WPFUI
                 new SaveFileDialog
                 {
                     InitialDirectory = AppDomain.CurrentDomain.BaseDirectory,
-                    Filter = $"Saved games (*.{SAVE_GAME_FILE_EXTENSION})|*.{SAVE_GAME_FILE_EXTENSION}"
+                    Filter = $"Save game (*.{SAVE_GAME_FILE_EXTENSION})|*.{SAVE_GAME_FILE_EXTENSION}"
                 };
             if (saveFileDialog.ShowDialog() == true)
             {
-                SaveService.Save(_gameSession, saveFileDialog.FileName);
+                Player player = _gameSession.CurrentPlayer;
+                int xCoord = _gameSession.CurrentLocation.XCoordinate;
+                int yCoord = _gameSession.CurrentLocation.YCoordinate;
+                SaveService.Save(new GameState(player, xCoord, yCoord), saveFileDialog.FileName);
             }
         }
     }

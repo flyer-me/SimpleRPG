@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Engine.Models;
 using Engine.Factories;
-using Engine.ViewModels;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -13,12 +12,12 @@ namespace Engine.Services
     #pragma warning disable CS8600, CS8602, CS8604
     public class SaveService
     {
-        public static void Save(GameSession gameSession ,string fileName)
+        public static void Save(GameState gameState ,string fileName)
         {
-            var json = JsonConvert.SerializeObject(gameSession, Formatting.Indented);
+            var json = JsonConvert.SerializeObject(gameState, Formatting.Indented);
             File.WriteAllText(fileName, json);
         }
-        public static GameSession LoadSaveOrCreate(string fileName)
+        public static GameState LoadSaveOrCreate(string fileName)
         {
             if (!File.Exists(fileName))
             {
@@ -28,9 +27,9 @@ namespace Engine.Services
             {
                 JObject data = JObject.Parse(File.ReadAllText(fileName));
                 Player player = CreatePlayer(data);
-                int x = (int)data[nameof(GameSession.CurrentLocation)][nameof(Location.XCoordinate)];
-                int y = (int)data[nameof(GameSession.CurrentLocation)][nameof(Location.YCoordinate)];
-                return new GameSession(player, x, y);
+                int x = (int)data[nameof(GameState.XCoordinate)];
+                int y = (int)data[nameof(GameState.YCoordinate)];
+                return new GameState(player, x, y);
             }
             catch (Exception ex)
             {
@@ -40,12 +39,12 @@ namespace Engine.Services
         private static Player CreatePlayer(JObject data)
         {
             Player player =
-                new Player((string)data[nameof(GameSession.CurrentPlayer)][nameof(Player.Name)],
-                            (int)data[nameof(GameSession.CurrentPlayer)][nameof(Player.ExperiencePoints)],
-                            (int)data[nameof(GameSession.CurrentPlayer)][nameof(Player.MaximumHitPoints)],
-                            (int)data[nameof(GameSession.CurrentPlayer)][nameof(Player.CurrentHitPoints)],
+                new Player((string)data[nameof(GameState.Player)][nameof(Player.Name)],
+                            (int)data[nameof(GameState.Player)][nameof(Player.ExperiencePoints)],
+                            (int)data[nameof(GameState.Player)][nameof(Player.MaximumHitPoints)],
+                            (int)data[nameof(GameState.Player)][nameof(Player.CurrentHitPoints)],
                             GetPlayerAttributes(data),
-                            (int)data[nameof(GameSession.CurrentPlayer)][nameof(Player.Assets)]);
+                            (int)data[nameof(GameState.Player)][nameof(Player.Assets)]);
             PopulatePlayerInventory(data, player);
             PopulatePlayerQuests(data, player);
             PopulatePlayerRecipes(data, player);
@@ -54,7 +53,7 @@ namespace Engine.Services
         private static IEnumerable<PlayerAttribute> GetPlayerAttributes(JObject data)
         {
             List<PlayerAttribute> playerAttributes = [];
-            foreach (JToken item in (JArray)data[nameof(GameSession.CurrentPlayer)]
+            foreach (JToken item in (JArray)data[nameof(GameState.Player)]
                 [nameof(Player.Attributes)])
             {
                 playerAttributes.Add(new PlayerAttribute(
@@ -68,7 +67,7 @@ namespace Engine.Services
         }
         private static void PopulatePlayerInventory(JObject data, Player player)
         {
-            foreach(JToken itemToken in (JArray)data[nameof(GameSession.CurrentPlayer)]
+            foreach(JToken itemToken in (JArray)data[nameof(GameState.Player)]
                 [nameof(Player.Inventory)]
                 [nameof(Inventory.Items)])
             {
@@ -78,7 +77,7 @@ namespace Engine.Services
         }
         private static void PopulatePlayerQuests(JObject data, Player player)
         {
-            foreach(JToken questToken in (JArray)data[nameof(GameSession.CurrentPlayer)]
+            foreach(JToken questToken in (JArray)data[nameof(GameState.Player)]
                 [nameof(Player.Quests)])
             {
                 int questId =
@@ -92,7 +91,7 @@ namespace Engine.Services
         private static void PopulatePlayerRecipes(JObject data, Player player)
         {
             foreach(JToken recipeToken in
-                (JArray)data[nameof(GameSession.CurrentPlayer)][nameof(Player.Recipes)])
+                (JArray)data[nameof(GameState.Player)][nameof(Player.Recipes)])
             {
                 int recipeId = (int)recipeToken[nameof(Recipe.ID)];
                 Recipe recipe = RecipeFactory.RecipeByID(recipeId);
