@@ -35,6 +35,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RPG.Models\RPG.Models.csproj" />
+    <ProjectReference Include="..\RPG.Core\RPG.Core.csproj" />
   </ItemGroup>
 
 </Project>

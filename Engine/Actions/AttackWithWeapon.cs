@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Engine.Models;
 using Engine.Services;
+using RPG.Core;
 
 namespace Engine.Actions
 {

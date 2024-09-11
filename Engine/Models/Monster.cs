@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Engine.Factories;
+using RPG.Core;
 
 namespace Engine.Models
 {

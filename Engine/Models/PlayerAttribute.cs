@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using Engine.Services;
+using RPG.Core;
 namespace Engine.Models
 {
     public class PlayerAttribute : INotifyPropertyChanged

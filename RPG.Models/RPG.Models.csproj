@@ -14,4 +14,8 @@
     <PackageReference Include="PropertyChanged.fody" Version="4.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RPG.Core\RPG.Core.csproj" />
+  </ItemGroup>
+
 </Project>
