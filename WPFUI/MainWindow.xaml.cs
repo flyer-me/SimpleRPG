@@ -62,7 +62,7 @@ namespace WPFUI
             tradeScreen.ShowDialog();
         }
 
-        private void OnGameMessageRaised(object sender, GameMessageEventArgs e)
+        private void OnGameMessageRaised(object? sender, GameMessageEventArgs e)
         {
             GameMessages.Document.Blocks.Add(new Paragraph(new Run(e.Message)));
             GameMessages.ScrollToEnd();
