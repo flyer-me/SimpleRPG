@@ -42,13 +42,13 @@ namespace TestEngine.Models
         {
             Inventory inventory = new Inventory();
             Inventory inventory1 =
-                inventory.AddItems(new List<ItemQuantity> {new ItemQuantity(1001, 3)});
+                inventory.AddItems(new List<ItemQuantity> {new ItemQuantity(ItemFactory.CreateGameItem(1001), 3)});
             Assert.AreEqual(3, inventory1.Items.Count(i => i.ItemTypeID == 1001));
             Inventory inventory2 =
                 inventory1.AddItemFromFactory(1001);
             Assert.AreEqual(4, inventory2.Items.Count(i => i.ItemTypeID == 1001));
             Inventory inventory3 =
-                inventory2.AddItems(new List<ItemQuantity> {new ItemQuantity(1002, 1)});
+                inventory2.AddItems(new List<ItemQuantity> {new ItemQuantity(ItemFactory.CreateGameItem(1002), 1)});
             Assert.AreEqual(4, inventory3.Items.Count(i => i.ItemTypeID == 1001));
             Assert.AreEqual(1, inventory3.Items.Count(i => i.ItemTypeID == 1002));
         }
@@ -120,13 +120,13 @@ namespace TestEngine.Models
             Assert.AreEqual(2, inventory2.Items.Count(i => i.ItemTypeID == 3001));
             Inventory inventory3 =
                 inventory2
-                    .RemoveItems(new List<ItemQuantity> {new ItemQuantity(1002, 2)});
+                    .RemoveItems(new List<ItemQuantity> {new ItemQuantity(ItemFactory.CreateGameItem(1002), 2)});
             Assert.AreEqual(1, inventory3.Items.Count(i => i.ItemTypeID == 1001));
             Assert.AreEqual(2, inventory3.Items.Count(i => i.ItemTypeID == 1002));
             Assert.AreEqual(2, inventory3.Items.Count(i => i.ItemTypeID == 3001));
             Inventory inventory4 =
                 inventory3
-                    .RemoveItems(new List<ItemQuantity> {new ItemQuantity(1002, 1)});
+                    .RemoveItems(new List<ItemQuantity> {new ItemQuantity(ItemFactory.CreateGameItem(1002), 1)});
             Assert.AreEqual(1, inventory4.Items.Count(i => i.ItemTypeID == 1001));
             Assert.AreEqual(1, inventory4.Items.Count(i => i.ItemTypeID == 1002));
             Assert.AreEqual(2, inventory4.Items.Count(i => i.ItemTypeID == 3001));
@@ -151,9 +151,7 @@ namespace TestEngine.Models
             Assert.AreEqual(4, inventory2.Items.Count(i => i.ItemTypeID == 1002));
             Assert.AreEqual(2, inventory2.Items.Count(i => i.ItemTypeID == 3001));
             // Should throw an exception:trying to remove more items than exist in the inventory.
-            Inventory inventory3 =
-                inventory2
-                    .RemoveItems(new List<ItemQuantity> {new ItemQuantity(1002, 999)});
+            Inventory inventory3 = inventory2.RemoveItems(new List<ItemQuantity> {new ItemQuantity(ItemFactory.CreateGameItem(1002), 999)});
         }
     }
 }

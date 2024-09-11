@@ -148,7 +148,7 @@ namespace Engine.ViewModels
                         foreach (ItemQuantity itemQuantity in quest.RewardItems)
                         {
                             GameItem rewardItem = ItemFactory.CreateGameItem(itemQuantity.ItemID);
-                            _messageBroker.RaiseMessage($"receive a {rewardItem.Name}");
+                            _messageBroker.RaiseMessage($"Receive a {rewardItem.Name}");
                             CurrentPlayer.AddItemToInventory(rewardItem);
                         }
 
@@ -226,7 +226,7 @@ namespace Engine.ViewModels
                 _messageBroker.RaiseMessage("You do not have the required ingredients:");
                 foreach (ItemQuantity requiredItems in RequiredItems)
                 {
-                    _messageBroker.RaiseMessage($"  {requiredItems.Quantity} {ItemFactory.ItemName(requiredItems.ItemID)}");
+                    _messageBroker.RaiseMessage($"  {requiredItems.QuantityItemDescription}");
                 }
             }
         }
