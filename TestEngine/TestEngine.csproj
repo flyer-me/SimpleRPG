@@ -22,13 +22,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Engine\Engine.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="TestFiles\SavedGames\Game_0_1_000.simplerpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RPG.Models\RPG.Models.csproj" />
+    <ProjectReference Include="..\RPG.Services\RPG.Services.csproj" />
+    <ProjectReference Include="..\RPG.ViewModels\RPG.ViewModels.csproj" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

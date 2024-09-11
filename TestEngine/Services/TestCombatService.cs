@@ -1,6 +1,6 @@
-using Engine.Models;
-using Engine.Services;
-namespace TestEngine.Services
+using RPG.Models;
+using RPG.Services;
+namespace TestRPG.Services
 {
     [TestClass]
     public class TestCombatService

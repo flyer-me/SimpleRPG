@@ -1,9 +1,9 @@
 using System;
-using Engine.Actions;
-using Engine.Factories;
-using Engine.Models;
+using RPG.Models.Actions;
+using RPG.Models;
+using RPG.Services.Factories;
 
-namespace TestEngine.Actions
+namespace TestRPG.Models.Actions
 {
     [TestClass]
     public class TestAttackWithWeapon

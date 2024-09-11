@@ -3,7 +3,6 @@
   <ItemGroup>
     <ProjectReference Include="..\RPG.Models\RPG.Models.csproj" />
     <ProjectReference Include="..\RPG.Services\RPG.Services.csproj" />
-    <ProjectReference Include="..\Engine\Engine.csproj" />
   </ItemGroup>
 
   <ItemGroup>

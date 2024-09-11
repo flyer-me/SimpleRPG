@@ -1,9 +1,9 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using Engine.Factories;
-using Engine.Models;
-using Engine.Services;
+using RPG.Services.Factories;
+using RPG.Models;
+using RPG.Services;
 namespace RPG.ViewModels
 {
     public class CharacterCreationViewModel : INotifyPropertyChanged

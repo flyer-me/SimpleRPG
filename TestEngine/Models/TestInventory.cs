@@ -1,6 +1,6 @@
-using Engine.Factories;
-using Engine.Models;
-namespace TestEngine.Models
+using RPG.Services.Factories;
+using RPG.Models;
+namespace TestRPG.Models
 {
     [TestClass]
     public class TestInventory
