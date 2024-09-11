@@ -4,7 +4,7 @@ using System.Linq;
 using Engine.Factories;
 using Engine.Models;
 using Engine.Services;
-namespace Engine.ViewModels
+namespace RPG.ViewModels
 {
     public class CharacterCreationViewModel : INotifyPropertyChanged
     {

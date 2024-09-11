@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
-using Engine.EventArgs;
+using RPG.Models.EventArgs;
 using Engine.Models;
 using Engine.Services;
 using Engine.ViewModels;

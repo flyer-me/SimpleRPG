@@ -1,5 +1,5 @@
 using System;
-using Engine.EventArgs;
+using RPG.Models.EventArgs;
 using Engine.Services;
 
 namespace Engine.Models

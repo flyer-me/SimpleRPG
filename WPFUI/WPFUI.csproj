@@ -7,7 +7,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy $(SolutionDir)DataFiles\*.* $(ProjectDir)$(OutDir) /s /y" />
+    <Exec Command="xcopy $(ProjectDir)..\DataFiles\*.* $(ProjectDir)$(OutDir) /s /y" />
   </Target>
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
