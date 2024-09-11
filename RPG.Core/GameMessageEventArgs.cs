@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RPG.Models.EventArgs
+namespace RPG.Core
 {
     public class GameMessageEventArgs : System.EventArgs
     {

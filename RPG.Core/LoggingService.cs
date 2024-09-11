@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-namespace RPG.Services
+namespace RPG.Core
 {
     public static class LoggingService
     {

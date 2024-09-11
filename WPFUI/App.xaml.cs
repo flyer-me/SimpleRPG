@@ -2,7 +2,7 @@
 using System.Data;
 using System.Windows;
 using System.Windows.Threading;
-using RPG.Services;
+using RPG.Core;
 
 namespace WPFUI
 {

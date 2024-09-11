@@ -1,6 +1,7 @@
 using System;
 using RPG.Models.EventArgs;
 using Engine.Services;
+using RPG.Core;
 
 namespace Engine.Models
 {

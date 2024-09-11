@@ -4,6 +4,7 @@
     <ProjectReference Include="..\Engine\Engine.csproj" />
     <ProjectReference Include="..\RPG.Models\RPG.Models.csproj" />
     <ProjectReference Include="..\RPG.ViewModels\RPG.ViewModels.csproj" />
+    <ProjectReference Include="..\RPG.Core\RPG.Core.csproj" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

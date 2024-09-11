@@ -5,6 +5,7 @@ using Engine.Factories;
 using Engine.Services;
 using Newtonsoft.Json;
 using System.ComponentModel;
+using RPG.Core;
 
 namespace Engine.ViewModels
 {

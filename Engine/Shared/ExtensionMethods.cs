@@ -37,5 +37,10 @@ namespace Engine.Shared
         {
             return Convert.ToInt32(jsonToken[key]);
         }
+                public static List<GameItem> ItemsThatAre(this IEnumerable<GameItem> inventory,
+                                                  GameItem.ItemCategory category)
+        {
+            return inventory.Where(i => i.Category == category).ToList();
+        }
     }
 }

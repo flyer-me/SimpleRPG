@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using RPG.Models.EventArgs;
 
-namespace Engine.Services
+namespace RPG.Core
 {
     public class MessageBroker
     {
@@ -17,7 +16,7 @@ namespace Engine.Services
         {
             return _messageBroker;
         }
-        internal void RaiseMessage(string message)
+        public void RaiseMessage(string message)
         {
             OnMessageRaised?.Invoke(this, new GameMessageEventArgs(message));
         }
