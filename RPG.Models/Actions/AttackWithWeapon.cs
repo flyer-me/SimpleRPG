@@ -8,7 +8,7 @@ using RPG.Core;
 
 namespace RPG.Models.Actions
 {
-    public class AttackWithWeapon : BaseAction, IAction
+    public sealed class AttackWithWeapon : BaseAction, IAction
     {
         private readonly int _maximumDamage;
         private readonly int _minimumDamage;

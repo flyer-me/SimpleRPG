@@ -6,7 +6,7 @@ using RPG.Models;
 
 namespace RPG.Models.Actions
 {
-    public class Heal : BaseAction, IAction
+    public sealed class Heal : BaseAction, IAction
     {
         private readonly int _hitPointsToHeal;
         public event EventHandler<string> OnActionPerformed;
