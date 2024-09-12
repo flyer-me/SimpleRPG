@@ -108,11 +108,11 @@ namespace WPFUI
         }
         private void SetActiveGameSessionTo(GameSession gameSession)
         {
-            _messageBroker.OnMessageRaised -= OnGameMessageRaised;
+            _messageBroker.MessageRaised -= OnGameMessageRaised;
             _gameSession = gameSession;
             DataContext = _gameSession;
             GameMessages.Document.Blocks.Clear();
-            _messageBroker.OnMessageRaised += OnGameMessageRaised;
+            _messageBroker.MessageRaised += OnGameMessageRaised;
         }
         private void StartNewGame_OnClick(object sender, RoutedEventArgs e)
         {

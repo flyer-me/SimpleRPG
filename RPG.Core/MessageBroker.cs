@@ -19,14 +19,18 @@ namespace RPG.Core
         private MessageBroker()
         {
         }
-        public event EventHandler<GameMessageEventArgs> OnMessageRaised;
+        public event EventHandler<GameMessageEventArgs> MessageRaised;
         public static MessageBroker GetInstance()
         {
             return _messageBroker;
         }
         public void RaiseMessage(string message)
         {
-            OnMessageRaised?.Invoke(this, new GameMessageEventArgs(message));
+            OnMessageRaised(new GameMessageEventArgs(message));
+        }
+        public void OnMessageRaised(GameMessageEventArgs e)
+        {
+            MessageRaised?.Invoke(this, e);
         }
     }
 }
