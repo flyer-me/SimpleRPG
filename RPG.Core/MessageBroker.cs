@@ -7,7 +7,7 @@ namespace RPG.Core
 {
     public class GameMessageEventArgs : EventArgs
     {
-        public string Message { get; private set; }
+        public string Message { get; }
         public GameMessageEventArgs(string message)
         {
             Message = message;
