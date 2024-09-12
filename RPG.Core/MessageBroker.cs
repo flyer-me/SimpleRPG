@@ -5,6 +5,14 @@ using System.Threading.Tasks;
 
 namespace RPG.Core
 {
+    public class GameMessageEventArgs : EventArgs
+    {
+        public string Message { get; private set; }
+        public GameMessageEventArgs(string message)
+        {
+            Message = message;
+        }
+    }
     public class MessageBroker
     {
         private static readonly MessageBroker _messageBroker = new MessageBroker();
