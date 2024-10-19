@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 namespace RPG.Models
 {
     public class Race

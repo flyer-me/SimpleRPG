@@ -1,15 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
+using Microsoft.Win32;
 using RPG.Core;
 using RPG.Models;
 using RPG.Services;
 using RPG.ViewModels;
 using System.ComponentModel;
-using Microsoft.Win32;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Input;
 using WPFUI.Windows;
 
 namespace WPFUI
@@ -94,7 +92,7 @@ namespace WPFUI
         }
         private void SetTabFocusTo(string tabName)
         {
-            foreach(object item in PlayerDataTabControl.Items)
+            foreach (object item in PlayerDataTabControl.Items)
             {
                 if (item is TabItem tabItem)
                 {
@@ -138,7 +136,7 @@ namespace WPFUI
                 new YesNoWindow("Save", "Do you want to save?");
             message.Owner = GetWindow(this);
             message.ShowDialog();
-            if(message.ClickedYes)
+            if (message.ClickedYes)
             {
                 SaveGame();
             }

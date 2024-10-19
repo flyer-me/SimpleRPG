@@ -1,6 +1,6 @@
-using System.Xml;
 using RPG.Models;
 using RPG.Models.Shared;
+using System.Xml;
 
 namespace RPG.Services.Factories
 {
@@ -10,7 +10,7 @@ namespace RPG.Services.Factories
         private static readonly List<Recipe> _recipes = new List<Recipe>();
         static RecipeFactory()
         {
-            if(File.Exists(GAME_DATA_FILENAME))
+            if (File.Exists(GAME_DATA_FILENAME))
             {
                 XmlDocument data = new XmlDocument();
                 data.LoadXml(File.ReadAllText(GAME_DATA_FILENAME));
@@ -27,16 +27,16 @@ namespace RPG.Services.Factories
             {
                 return;
             }
-            foreach(XmlNode node in nodes)
+            foreach (XmlNode node in nodes)
             {
                 List<ItemQuantity> ingredients = [];
-                foreach(XmlNode childNode in node.SelectNodes("./Ingredients/Item"))
+                foreach (XmlNode childNode in node.SelectNodes("./Ingredients/Item"))
                 {
                     GameItem item = ItemFactory.CreateGameItem(childNode.AttributeAsInt("ID"));
                     ingredients.Add(new ItemQuantity(item, childNode.AttributeAsInt("Quantity")));
                 }
                 List<ItemQuantity> outputItems = [];
-                foreach(XmlNode childNode in node.SelectNodes("./OutputItems/Item"))
+                foreach (XmlNode childNode in node.SelectNodes("./OutputItems/Item"))
                 {
                     GameItem item = ItemFactory.CreateGameItem(childNode.AttributeAsInt("ID"));
                     outputItems.Add(new ItemQuantity(item, childNode.AttributeAsInt("Quantity")));

@@ -1,5 +1,5 @@
-using System.ComponentModel;
 using RPG.Core;
+using System.ComponentModel;
 namespace RPG.Models
 {
     public class PlayerAttribute : INotifyPropertyChanged
@@ -9,7 +9,7 @@ namespace RPG.Models
         public string DisplayName { get; }
         public string ValueRange { get; }
         public int BaseValue { get; set; }
-        public int ModifiedValue {get; set; }
+        public int ModifiedValue { get; set; }
         // The constructor this calls will put that same value into BaseValue and ModifiedValue
         public PlayerAttribute(string key, string displayName, string valueRange)
             : this(key, displayName, valueRange, RandomGenerate.NumberBetween(int.Parse(valueRange.Split('-')[0]), int.Parse(valueRange.Split('-')[1])))

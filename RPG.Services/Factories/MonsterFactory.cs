@@ -1,7 +1,7 @@
-using System.Xml;
 using RPG.Core;
 using RPG.Models;
 using RPG.Models.Shared;
+using System.Xml;
 namespace RPG.Services.Factories
 {
     public static class MonsterFactory

@@ -1,5 +1,3 @@
-using RPG.Models;
-using RPG.Services;
 namespace TestRPG.Services
 {
     [TestClass]

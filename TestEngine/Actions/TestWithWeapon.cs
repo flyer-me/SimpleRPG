@@ -1,6 +1,5 @@
-using System;
-using RPG.Models.Actions;
 using RPG.Models;
+using RPG.Models.Actions;
 using RPG.Services.Factories;
 
 namespace TestRPG.Models.Actions

@@ -1,6 +1,6 @@
-﻿using System.Xml;
-using RPG.Models;
+﻿using RPG.Models;
 using RPG.Models.Shared;
+using System.Xml;
 
 namespace RPG.Services.Factories
 {
@@ -10,7 +10,7 @@ namespace RPG.Services.Factories
         private static readonly List<Quest> _quests = new List<Quest>();
         static QuestFactory()
         {
-            if(File.Exists(GAME_DATA_FILENAME))
+            if (File.Exists(GAME_DATA_FILENAME))
             {
                 XmlDocument data = new XmlDocument();
                 data.LoadXml(File.ReadAllText(GAME_DATA_FILENAME));
@@ -27,16 +27,16 @@ namespace RPG.Services.Factories
             {
                 return;
             }
-            foreach(XmlNode node in nodes)
+            foreach (XmlNode node in nodes)
             {
                 List<ItemQuantity> itemsToComplete = new List<ItemQuantity>();
                 List<ItemQuantity> rewardItems = new List<ItemQuantity>();
-                foreach(XmlNode childNode in node.SelectNodes("./ItemsToComplete/Item")!)
+                foreach (XmlNode childNode in node.SelectNodes("./ItemsToComplete/Item")!)
                 {
                     GameItem item = ItemFactory.CreateGameItem(childNode.AttributeAsInt("ID"));
                     itemsToComplete.Add(new ItemQuantity(item, childNode.AttributeAsInt("Quantity")));
                 }
-                foreach(XmlNode childNode in node.SelectNodes("./RewardItems/Item")!)
+                foreach (XmlNode childNode in node.SelectNodes("./RewardItems/Item")!)
                 {
                     GameItem item = ItemFactory.CreateGameItem(childNode.AttributeAsInt("ID"));
                     rewardItems.Add(new ItemQuantity(item, childNode.AttributeAsInt("Quantity")));

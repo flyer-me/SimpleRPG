@@ -1,6 +1,6 @@
-using System.Windows;
 using RPG.Models;
 using RPG.ViewModels;
+using System.Windows;
 
 namespace WPFUI
 {
@@ -19,7 +19,7 @@ namespace WPFUI
         {
             GroupedInventoryItem? groupedInventoryItem =
                 ((FrameworkElement)sender).DataContext as GroupedInventoryItem;
-            if(groupedInventoryItem != null)
+            if (groupedInventoryItem != null)
             {
                 Session.CurrentPlayer.ReceiveAssets(groupedInventoryItem.Item.Price);
                 Session.CurrentTrader!.AddItemToInventory(groupedInventoryItem.Item);
@@ -30,9 +30,9 @@ namespace WPFUI
         {
             GroupedInventoryItem? groupedInventoryItem =
                 ((FrameworkElement)sender).DataContext as GroupedInventoryItem;
-            if(groupedInventoryItem != null)
+            if (groupedInventoryItem != null)
             {
-                if(Session.CurrentPlayer.Assets >= groupedInventoryItem.Item.Price)
+                if (Session.CurrentPlayer.Assets >= groupedInventoryItem.Item.Price)
                 {
                     Session.CurrentPlayer.SpendAssets(groupedInventoryItem.Item.Price);
                     Session.CurrentTrader.RemoveItemFromInventory(groupedInventoryItem.Item);

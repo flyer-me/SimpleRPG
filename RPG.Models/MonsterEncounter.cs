@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RPG.Models
+﻿namespace RPG.Models
 {
     // 存储生成概率
     public class MonsterEncounter

@@ -1,6 +1,5 @@
-using System;
-using System.Xml;
 using Newtonsoft.Json.Linq;
+using System.Xml;
 
 namespace RPG.Models.Shared
 {
@@ -8,7 +7,7 @@ namespace RPG.Models.Shared
     {
         public static PlayerAttribute GetAttribute(this LivingEntity entity, string attributeKey)
         {
-            return entity.Attributes.First( i => i.Key.Equals(attributeKey,
+            return entity.Attributes.First(i => i.Key.Equals(attributeKey,
                                                 StringComparison.CurrentCultureIgnoreCase));
         }
         public static int AttributeAsInt(this XmlNode node, string attributeName)
@@ -36,8 +35,8 @@ namespace RPG.Models.Shared
         {
             return Convert.ToInt32(jsonToken[key]);
         }
-                public static List<GameItem> ItemsThatAre(this IEnumerable<GameItem> inventory,
-                                                  GameItem.ItemCategory category)
+        public static List<GameItem> ItemsThatAre(this IEnumerable<GameItem> inventory,
+                                          GameItem.ItemCategory category)
         {
             return inventory.Where(i => i.Category == category).ToList();
         }

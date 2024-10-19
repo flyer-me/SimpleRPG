@@ -1,18 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using RPG.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using RPG.Models;
 using RPG.Services.Factories;
 
 namespace RPG.Services
 {
-    #pragma warning disable CS8600, CS8602, CS8604
+#pragma warning disable CS8600, CS8602, CS8604
     public class SaveService
     {
-        public static void Save(GameState gameState ,string fileName)
+        public static void Save(GameState gameState, string fileName)
         {
             var json = JsonConvert.SerializeObject(gameState, Formatting.Indented);
             File.WriteAllText(fileName, json);
@@ -67,7 +63,7 @@ namespace RPG.Services
         }
         private static void PopulatePlayerInventory(JObject data, Player player)
         {
-            foreach(JToken itemToken in (JArray)data[nameof(GameState.Player)]
+            foreach (JToken itemToken in (JArray)data[nameof(GameState.Player)]
                 [nameof(Player.Inventory)]
                 [nameof(Inventory.Items)])
             {
@@ -77,7 +73,7 @@ namespace RPG.Services
         }
         private static void PopulatePlayerQuests(JObject data, Player player)
         {
-            foreach(JToken questToken in (JArray)data[nameof(GameState.Player)]
+            foreach (JToken questToken in (JArray)data[nameof(GameState.Player)]
                 [nameof(Player.Quests)])
             {
                 int questId =
@@ -90,7 +86,7 @@ namespace RPG.Services
         }
         private static void PopulatePlayerRecipes(JObject data, Player player)
         {
-            foreach(JToken recipeToken in
+            foreach (JToken recipeToken in
                 (JArray)data[nameof(GameState.Player)][nameof(Player.Recipes)])
             {
                 int recipeId = (int)recipeToken[nameof(Recipe.ID)];

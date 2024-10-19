@@ -1,10 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RPG.ViewModels;
-
 namespace TestRPG.ViewModels
 {
     [TestClass]

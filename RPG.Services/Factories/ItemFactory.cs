@@ -1,7 +1,7 @@
-﻿using System.Xml;
-using RPG.Models;
+﻿using RPG.Models;
 using RPG.Models.Actions;
 using RPG.Models.Shared;
+using System.Xml;
 
 namespace RPG.Services.Factories
 {
@@ -57,7 +57,7 @@ namespace RPG.Services.Factories
         }
         private static GameItem.ItemCategory DetermineItemCategory(string itemType)
         {
-            switch(itemType)
+            switch (itemType)
             {
                 case "Weapon": return GameItem.ItemCategory.Weapon;
                 case "HealingItem": return GameItem.ItemCategory.Consumable;

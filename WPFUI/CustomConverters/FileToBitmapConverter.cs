@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
@@ -29,7 +25,7 @@ namespace WPFUI.CustomConverters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-           return null;
+            return null;
         }
     }
 }

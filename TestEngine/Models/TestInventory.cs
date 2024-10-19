@@ -1,5 +1,5 @@
-using RPG.Services.Factories;
 using RPG.Models;
+using RPG.Services.Factories;
 namespace TestRPG.Models
 {
     [TestClass]
@@ -37,13 +37,13 @@ namespace TestRPG.Models
             Inventory inventory = new Inventory();
             GameItem item = ItemFactory.CreateGameItem(1001);
             Inventory inventory1 =
-                inventory.AddItems(new List<GameItem> {item, item, item});
+                inventory.AddItems(new List<GameItem> { item, item, item });
             Assert.AreEqual(3, inventory1.Items.Count(i => i.ItemTypeID == 1001));
             Inventory inventory2 =
                 inventory1.AddItem(ItemFactory.CreateGameItem(1001));
             Assert.AreEqual(4, inventory2.Items.Count(i => i.ItemTypeID == 1001));
             Inventory inventory3 =
-                inventory2.AddItems(new List<GameItem> {ItemFactory.CreateGameItem(1002)});
+                inventory2.AddItems(new List<GameItem> { ItemFactory.CreateGameItem(1002) });
             Assert.AreEqual(4, inventory3.Items.Count(i => i.ItemTypeID == 1001));
             Assert.AreEqual(1, inventory3.Items.Count(i => i.ItemTypeID == 1002));
         }
@@ -54,7 +54,7 @@ namespace TestRPG.Models
             GameItem item1 = ItemFactory.CreateGameItem(3001);
             GameItem item2 = ItemFactory.CreateGameItem(3002);
             Inventory inventory1 =
-                inventory.AddItems(new List<GameItem> {item1, item2});
+                inventory.AddItems(new List<GameItem> { item1, item2 });
             Inventory inventory2 =
                 inventory1.RemoveItem(item1);
             Assert.AreEqual(1, inventory2.Items.Count);
@@ -67,9 +67,9 @@ namespace TestRPG.Models
             GameItem item2 = ItemFactory.CreateGameItem(3002);
             GameItem item3 = ItemFactory.CreateGameItem(3002);
             Inventory inventory1 =
-                inventory.AddItems(new List<GameItem> {item1, item2, item3});
+                inventory.AddItems(new List<GameItem> { item1, item2, item3 });
             Inventory inventory2 =
-                inventory1.RemoveItems(new List<GameItem> {item2, item3});
+                inventory1.RemoveItems(new List<GameItem> { item2, item3 });
             Assert.AreEqual(1, inventory2.Items.Count);
         }
         [TestMethod]
@@ -114,13 +114,13 @@ namespace TestRPG.Models
             Assert.AreEqual(2, inventory2.Items.Count(i => i.ItemTypeID == 3001));
             Inventory inventory3 =
                 inventory2
-                    .RemoveItems(new List<ItemQuantity> {new(ItemFactory.CreateGameItem(1002), 2)});
+                    .RemoveItems(new List<ItemQuantity> { new(ItemFactory.CreateGameItem(1002), 2) });
             Assert.AreEqual(1, inventory3.Items.Count(i => i.ItemTypeID == 1001));
             Assert.AreEqual(2, inventory3.Items.Count(i => i.ItemTypeID == 1002));
             Assert.AreEqual(2, inventory3.Items.Count(i => i.ItemTypeID == 3001));
             Inventory inventory4 =
                 inventory3
-                    .RemoveItems(new List<ItemQuantity> {new(ItemFactory.CreateGameItem(1002), 1)});
+                    .RemoveItems(new List<ItemQuantity> { new(ItemFactory.CreateGameItem(1002), 1) });
             Assert.AreEqual(1, inventory4.Items.Count(i => i.ItemTypeID == 1001));
             Assert.AreEqual(1, inventory4.Items.Count(i => i.ItemTypeID == 1002));
             Assert.AreEqual(2, inventory4.Items.Count(i => i.ItemTypeID == 3001));
@@ -144,7 +144,7 @@ namespace TestRPG.Models
             Assert.AreEqual(4, inventory2.Items.Count(i => i.ItemTypeID == 1002));
             Assert.AreEqual(2, inventory2.Items.Count(i => i.ItemTypeID == 3001));
             // Should throw an exception:trying to remove more items than exist in the inventory.
-            Inventory inventory3 = inventory2.RemoveItems(new List<ItemQuantity> {new(ItemFactory.CreateGameItem(1002), 999)});
+            Inventory inventory3 = inventory2.RemoveItems(new List<ItemQuantity> { new(ItemFactory.CreateGameItem(1002), 999) });
         }
     }
 }

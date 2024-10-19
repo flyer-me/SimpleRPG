@@ -1,7 +1,6 @@
-using System;
+using RPG.Core;
 using RPG.Models.EventArgs;
 using RPG.Models.Shared;
-using RPG.Core;
 
 namespace RPG.Models
 {
@@ -25,7 +24,7 @@ namespace RPG.Models
             _opponent.OnKilled += OnOpponentKilled;
             _messageBroker.RaiseMessage("");
             _messageBroker.RaiseMessage($"You see a {_opponent.Name} here!");
-            if(FirstAttacker(_player, _opponent) == Combatant.Opponent)
+            if (FirstAttacker(_player, _opponent) == Combatant.Opponent)
             {
                 AttackPlayer();
             }
@@ -45,13 +44,13 @@ namespace RPG.Models
         }
         public void AttackOpponent()
         {
-            if(_player.CurrentWeapon == null)
+            if (_player.CurrentWeapon == null)
             {
                 _messageBroker.RaiseMessage("You must select a weapon, to attack.");
                 return;
             }
             _player.UseCurrentWeaponOn(_opponent);
-            if(_opponent.IsAlive)
+            if (_opponent.IsAlive)
             {
                 AttackPlayer();
             }
@@ -70,7 +69,7 @@ namespace RPG.Models
             _player.AddExperience(_opponent.RewardExperiencePoints);
             _messageBroker.RaiseMessage($"You receive {_opponent.Assets} gold.");
             _player.ReceiveAssets(_opponent.Assets);
-            foreach(GameItem gameItem in _opponent.Inventory.Items)
+            foreach (GameItem gameItem in _opponent.Inventory.Items)
             {
                 _messageBroker.RaiseMessage($"You receive one {gameItem.Name}.");
                 _player.AddItemToInventory(gameItem);

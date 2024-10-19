@@ -1,7 +1,5 @@
-using System.Collections.Generic;
-using System.Linq;
-using RPG.Models.Shared;
 using Newtonsoft.Json;
+using RPG.Models.Shared;
 
 namespace RPG.Models
 {
@@ -30,11 +28,11 @@ namespace RPG.Models
         #region Constructors
         public Inventory(IEnumerable<GameItem> items = null)
         {
-            if(items == null)
+            if (items == null)
             {
                 return;
             }
-            foreach(GameItem item in items)
+            foreach (GameItem item in items)
             {
                 _backingInventory.Add(item);
                 AddItemToGroupedInventory(item);
@@ -46,9 +44,9 @@ namespace RPG.Models
         {
             return items.All(item => Items.Count(i => i.ItemTypeID == item.ItemID) >= item.Quantity);
         }
-                public Inventory AddItem(GameItem item)
+        public Inventory AddItem(GameItem item)
         {
-            return AddItems(new List<GameItem> {item});
+            return AddItems(new List<GameItem> { item });
         }
         public Inventory AddItems(IEnumerable<GameItem> items)
         {
@@ -56,14 +54,14 @@ namespace RPG.Models
         }
         public Inventory RemoveItem(GameItem item)
         {
-            return RemoveItems(new List<GameItem> {item});
+            return RemoveItems(new List<GameItem> { item });
         }
         public Inventory RemoveItems(IEnumerable<GameItem> items)
         {
             // REFACTOR: Look for a cleaner solution, with fewer temporary variables.
             List<GameItem> workingInventory = Items.ToList();
             IEnumerable<GameItem> itemsToRemove = items.ToList();
-            foreach(GameItem item in itemsToRemove)
+            foreach (GameItem item in itemsToRemove)
             {
                 workingInventory.Remove(item);
             }
@@ -73,9 +71,9 @@ namespace RPG.Models
         {
             // REFACTOR
             Inventory workingInventory = new Inventory(Items);
-            foreach(var itemQuantity in itemQuantities)
+            foreach (var itemQuantity in itemQuantities)
             {
-                for(int i = 0; i < itemQuantity.Quantity; i++)
+                for (int i = 0; i < itemQuantity.Quantity; i++)
                 {
                     workingInventory =
                         workingInventory
@@ -91,13 +89,13 @@ namespace RPG.Models
         // REFACTOR TODO
         private void AddItemToGroupedInventory(GameItem item)
         {
-            if(item.IsUnique)
+            if (item.IsUnique)
             {
                 _backingGroupedInventoryItems.Add(new GroupedInventoryItem(item, 1));
             }
             else
             {
-                if(_backingGroupedInventoryItems.All(gi => gi.Item.ItemTypeID != item.ItemTypeID))
+                if (_backingGroupedInventoryItems.All(gi => gi.Item.ItemTypeID != item.ItemTypeID))
                 {
                     _backingGroupedInventoryItems.Add(new GroupedInventoryItem(item, 0));
                 }

@@ -1,10 +1,10 @@
 // encoding: utf-8
+using Newtonsoft.Json;
+using RPG.Core;
 using RPG.Models;
 using RPG.Services;
-using Newtonsoft.Json;
-using System.ComponentModel;
-using RPG.Core;
 using RPG.Services.Factories;
+using System.ComponentModel;
 
 namespace RPG.ViewModels
 {
@@ -48,7 +48,7 @@ namespace RPG.ViewModels
                 _currentLocation = value;
                 CompleteQuestsAtLocation();
                 GivePlayerQuestAtLocation();
-                CurrentMonster = MonsterFactory.GetMonsterAtLocation(CurrentLocation);;
+                CurrentMonster = MonsterFactory.GetMonsterAtLocation(CurrentLocation); ;
                 CurrentTrader = CurrentLocation.TraderHere;
             }
         }

@@ -1,18 +1,15 @@
-using System;
-using System.Collections.Generic;
-
 namespace RPG.Models
 {
     public class Monster : LivingEntity
     {
-        public List<ItemPercentage> LootTable {get; } = [];
+        public List<ItemPercentage> LootTable { get; } = [];
         public int ID { get; }
         public string ImageName { get; }
         public int RewardExperiencePoints { get; }
         public Monster(int id, string name, string imageName,
                         int maximumHitPoints, IEnumerable<PlayerAttribute> attributes,
                         GameItem currentWeapon,
-                        int rewardExperiencePoints, int rewardAssets):
+                        int rewardExperiencePoints, int rewardAssets) :
             base(name, maximumHitPoints, maximumHitPoints, attributes, rewardAssets)
         {
             ID = id;

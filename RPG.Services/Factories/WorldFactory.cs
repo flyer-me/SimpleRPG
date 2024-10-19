@@ -1,6 +1,6 @@
-﻿using System.Xml;
-using RPG.Models;
+﻿using RPG.Models;
 using RPG.Models.Shared;
+using System.Xml;
 
 namespace RPG.Services.Factories
 {
@@ -58,11 +58,11 @@ namespace RPG.Services.Factories
 
         private static void AddQuests(Location location, XmlNodeList? xmlNodeList)
         {
-            if(xmlNodeList == null)
+            if (xmlNodeList == null)
             {
                 return;
             }
-            foreach(XmlNode node in xmlNodeList)
+            foreach (XmlNode node in xmlNodeList)
             {
                 location.QuestsAvailableHere
                         .Add(QuestFactory.GetQuestByID(node.AttributeAsInt("ID")));
@@ -71,7 +71,7 @@ namespace RPG.Services.Factories
 
         private static void AddTrader(Location location, XmlNode? xmlNode)
         {
-            if(xmlNode == null)
+            if (xmlNode == null)
             {
                 return;
             }

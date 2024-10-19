@@ -1,5 +1,5 @@
-﻿using RPG.Models.Actions;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using RPG.Models.Actions;
 
 namespace RPG.Models
 {
@@ -21,7 +21,7 @@ namespace RPG.Models
         [JsonIgnore]
         public bool IsUnique { get; }
         [JsonIgnore]
-        public IAction Action {get; set; }
+        public IAction Action { get; set; }
         public GameItem(ItemCategory category, int itemTypeID, string name, int price,
                         bool isUnique = false, IAction action = null)
         {

@@ -13,7 +13,7 @@ namespace RPG.Services.Factories
         /// </summary>
         static TraderFactory()
         {
-            if(File.Exists(GAME_DATA_FILENAME))
+            if (File.Exists(GAME_DATA_FILENAME))
             {
                 XmlDocument data = new XmlDocument();
                 data.LoadXml(File.ReadAllText(GAME_DATA_FILENAME));
@@ -26,15 +26,15 @@ namespace RPG.Services.Factories
         }
         private static void LoadTradersFromNodes(XmlNodeList nodes)
         {
-            foreach(XmlNode node in nodes)
+            foreach (XmlNode node in nodes)
             {
                 Trader trader =
                     new Trader(node.AttributeAsInt("ID"),
                                node.SelectSingleNode("./Name")?.InnerText ?? "");
-                foreach(XmlNode childNode in node.SelectNodes("./InventoryItems/Item"))
+                foreach (XmlNode childNode in node.SelectNodes("./InventoryItems/Item"))
                 {
                     int quantity = childNode.AttributeAsInt("Quantity");
-                    for(int i = 0; i < quantity; i++)
+                    for (int i = 0; i < quantity; i++)
                     {
                         trader.AddItemToInventory(ItemFactory.CreateGameItem(childNode.AttributeAsInt("ID")));
                     }

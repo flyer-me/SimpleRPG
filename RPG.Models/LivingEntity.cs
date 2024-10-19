@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 
 namespace RPG.Models
@@ -25,7 +21,7 @@ namespace RPG.Models
             get => _currentWeapon;
             set
             {
-                if(_currentWeapon != null)
+                if (_currentWeapon != null)
                 {
                     _currentWeapon.Action.OnActionPerformed -= RaiseActionPerformedEvent;
                 }
@@ -41,7 +37,7 @@ namespace RPG.Models
             get => _currentConsumable;
             set
             {
-                if(_currentConsumable != null)
+                if (_currentConsumable != null)
                 {
                     _currentConsumable.Action.OnActionPerformed -= RaiseActionPerformedEvent;
                 }
@@ -88,7 +84,7 @@ namespace RPG.Models
         public void TakeDamage(int damageHitPoints)
         {
             CurrentHitPoints -= damageHitPoints;
-            if(IsDead)
+            if (IsDead)
             {
                 CurrentHitPoints = 0;
                 RaiseOnKilledEvent();
@@ -97,7 +93,7 @@ namespace RPG.Models
         public void Heal(int healHitPoints)
         {
             CurrentHitPoints += healHitPoints;
-            if(CurrentHitPoints > MaximumHitPoints)
+            if (CurrentHitPoints > MaximumHitPoints)
             {
                 CurrentHitPoints = MaximumHitPoints;
             }
@@ -112,7 +108,7 @@ namespace RPG.Models
         }
         public void SpendAssets(int assetsAmount)
         {
-            if(assetsAmount > Assets)
+            if (assetsAmount > Assets)
             {
                 throw new ArgumentOutOfRangeException($"{Name} 只持有 {Assets} 钱币，无法消耗 {assetsAmount} 钱币。");
             }

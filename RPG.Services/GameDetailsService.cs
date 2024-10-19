@@ -1,7 +1,6 @@
-using System.IO;
+using Newtonsoft.Json.Linq;
 using RPG.Models;
 using RPG.Models.Shared;
-using Newtonsoft.Json.Linq;
 namespace RPG.Services
 {
     public static class GameDetailsService
@@ -13,30 +12,30 @@ namespace RPG.Services
             GameDetails gameDetails =
                 new GameDetails(gameDetailsJson.StringValueOf("Title"),
                                 gameDetailsJson.StringValueOf("Version"));
-            foreach(JToken token in gameDetailsJson["PlayerAttributes"])
+            foreach (JToken token in gameDetailsJson["PlayerAttributes"])
             {
                 gameDetails.PlayerAttributes.Add(new PlayerAttribute(token.StringValueOf("Key"),
                                                                      token.StringValueOf("DisplayName"),
                                                                      token.StringValueOf("ValueRange")));
             }
-            if(gameDetailsJson["Races"] != null)
+            if (gameDetailsJson["Races"] != null)
             {
-                foreach(JToken token in gameDetailsJson["Races"])
+                foreach (JToken token in gameDetailsJson["Races"])
                 {
                     Race race = new Race
-                                {
-                                    Key = token.StringValueOf("Key"),
-                                    DisplayName = token.StringValueOf("DisplayName")
-                                };
-                    if(token["PlayerAttributeModifiers"] != null)
                     {
-                        foreach(JToken childToken in token["PlayerAttributeModifiers"])
+                        Key = token.StringValueOf("Key"),
+                        DisplayName = token.StringValueOf("DisplayName")
+                    };
+                    if (token["PlayerAttributeModifiers"] != null)
+                    {
+                        foreach (JToken childToken in token["PlayerAttributeModifiers"])
                         {
                             race.PlayerAttributeModifiers.Add(new PlayerAttributeModifier
-                                                              {
-                                                                  AttributeKey = childToken.StringValueOf("Key"),
-                                                                  Modifier = childToken.IntValueOf("Modifier")
-                                                              });
+                            {
+                                AttributeKey = childToken.StringValueOf("Key"),
+                                Modifier = childToken.IntValueOf("Modifier")
+                            });
                         }
                     }
                     gameDetails.Races.Add(race);

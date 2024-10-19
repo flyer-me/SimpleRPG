@@ -1,6 +1,6 @@
+using RPG.ViewModels;
 using System.Windows;
 using System.Windows.Controls;
-using RPG.ViewModels;
 namespace WPFUI
 {
     public partial class CharacterCreation : Window

@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using RPG.Models;
-
 namespace RPG.Models.Actions
 {
     public sealed class Heal : BaseAction, IAction
@@ -12,7 +6,7 @@ namespace RPG.Models.Actions
         public event EventHandler<string> OnActionPerformed;
         public Heal(GameItem itemInUse, int hitPointsToHeal) : base(itemInUse)
         {
-            if(itemInUse.Category != GameItem.ItemCategory.Consumable)
+            if (itemInUse.Category != GameItem.ItemCategory.Consumable)
             {
                 throw new ArgumentException($"{itemInUse.Name} is not consumable");
             }

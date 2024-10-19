@@ -1,9 +1,8 @@
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using RPG.Services.Factories;
 using RPG.Models;
 using RPG.Services;
+using RPG.Services.Factories;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 namespace RPG.ViewModels
 {
     public class CharacterCreationViewModel : INotifyPropertyChanged
@@ -19,7 +18,7 @@ namespace RPG.ViewModels
         public CharacterCreationViewModel()
         {
             GameDetails = GameDetailsService.ReadGameDetails();
-            if(HasRaces)
+            if (HasRaces)
             {
                 SelectedRace = GameDetails.Races.First();
             }
@@ -30,7 +29,7 @@ namespace RPG.ViewModels
         {
             // 本步骤可能多次调用，因此需要清除现有的属性
             PlayerAttributes.Clear();
-            foreach(PlayerAttribute playerAttribute in GameDetails.PlayerAttributes)
+            foreach (PlayerAttribute playerAttribute in GameDetails.PlayerAttributes)
             {
                 playerAttribute.ReRoll();
                 PlayerAttributes.Add(playerAttribute);
@@ -40,7 +39,7 @@ namespace RPG.ViewModels
         }
         public void ApplyAttributeModifiers()
         {
-            foreach(PlayerAttribute playerAttribute in PlayerAttributes)
+            foreach (PlayerAttribute playerAttribute in PlayerAttributes)
             {
                 var attributeRaceModifier =
                     SelectedRace.PlayerAttributeModifiers

@@ -1,8 +1,7 @@
-using System.Windows;
+using Microsoft.Win32;
 using RPG.Models;
 using RPG.Services;
-using RPG.ViewModels;
-using Microsoft.Win32;
+using System.Windows;
 
 namespace WPFUI
 {
@@ -12,7 +11,7 @@ namespace WPFUI
         public Startup()
         {
             InitializeComponent();
-            DataContext = GameDetailsService.ReadGameDetails();;
+            DataContext = GameDetailsService.ReadGameDetails(); ;
         }
         private void StartNewGame_OnClick(object sender, RoutedEventArgs e)
         {

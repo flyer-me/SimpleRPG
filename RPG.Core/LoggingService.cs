@@ -1,6 +1,3 @@
-using System;
-using System.IO;
-
 namespace RPG.Core
 {
     public static class LoggingService
@@ -9,14 +6,14 @@ namespace RPG.Core
         static LoggingService()
         {
             string logDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, LOG_FILE_DIRECTORY);
-            if(!Directory.Exists(logDirectory))
+            if (!Directory.Exists(logDirectory))
             {
                 Directory.CreateDirectory(logDirectory);
             }
         }
         public static void Log(Exception exception, bool isInnerException = false)
         {
-            using(StreamWriter sw = new StreamWriter(LogFileName(), true))
+            using (StreamWriter sw = new StreamWriter(LogFileName(), true))
             {
                 sw.WriteLine(isInnerException ? "INNER EXCEPTION" : $"EXCEPTION: {DateTime.Now}");
                 sw.WriteLine(new string(isInnerException ? '-' : '=', 40));
@@ -24,7 +21,7 @@ namespace RPG.Core
                 sw.WriteLine($"{exception.StackTrace}");
                 sw.WriteLine();
             }
-            if(exception.InnerException != null)
+            if (exception.InnerException != null)
             {
                 Log(exception.InnerException, true);
             }

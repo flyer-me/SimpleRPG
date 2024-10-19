@@ -1,8 +1,6 @@
-﻿using System.Configuration;
-using System.Data;
+﻿using RPG.Core;
 using System.Windows;
 using System.Windows.Threading;
-using RPG.Core;
 
 namespace WPFUI
 {
